@@ -1,16 +1,23 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const path = require("path");
+
+const { connectToMongoDB } = require('./connect');
 
 const app = express();
 dotenv.config();
 
-app.use(express.json());
+const PORT = process.env.PORT || 8001;
 
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+connectToMongoDB(process.env.MONGO_URI);
+
+// View Engine
+app.set("view engine", "ejs");
+app.set("views", path.resolve("./views"));
+
+app.use(express.json());  // Express built-in middleware to parse JSON
+app.use(express.urlencoded({ extended: false }));
 
 
 // routes
@@ -18,6 +25,6 @@ app.get('/', (req, res) => {
   res.send('Medivault is runnning');
 });
 
-app.listen(process.env.PORT, () => {
-  console.log(`server running on ${process.env.PORT}`);
+app.listen(PORT, () => {
+  console.log(`server running on ${PORT}`);
 });

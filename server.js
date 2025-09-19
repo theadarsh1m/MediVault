@@ -4,10 +4,7 @@ const dotenv = require('dotenv');
 const path = require("path");
 
 const { connectToMongoDB } = require('./connect');
-const Patient = require('./models/Patient');
-const Doctor = require('./models/Doctor');
-const Hospital = require('./models/Hospital');
-
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 dotenv.config();
@@ -23,31 +20,15 @@ app.set("views", path.resolve("./views"));
 app.use(express.json());  // Express built-in middleware to parse JSON
 app.use(express.urlencoded({ extended: false }));
 
+// auth routes -> jitne bhi req /auth k baad aegi vo authRoutes handle krega
+app.use("/auth", authRoutes);
 
-// routes
+// Main page route
 app.get('/', (req, res) => {
   res.send('Medivault is runnning');
 });
 
-app.post('/signup', async (req, res) => {
-  const { name, email, password, role } = req.body;
-  try {
-    if(role === "patient") {
-      const user = new Patient({ name, email, password });
-      await user.save();
-    } else if(role === "doctor") {
-      const user = new Doctor({ name, email, password });
-      await user.save();
-    } else if(role === "hospital") {
-      const user = new Hospital({ name, email, password });
-      await user.save();
-    }
-    res.send("Signup successful");
-  } catch(err) {
-    console.log(err);
-    res.send("Error signing up");
-  }
-});
+
 
 app.listen(PORT, () => {
   console.log(`server running on ${PORT}`);

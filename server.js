@@ -9,7 +9,7 @@ const authRoutes = require('./routes/authRoutes');
 const app = express();
 dotenv.config();
 
-const PORT = process.env.PORT || 8001;
+const PORT = process.env.PORT || 5000;
 
 connectToMongoDB(process.env.MONGO_URI);
 

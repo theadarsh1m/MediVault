@@ -25,7 +25,7 @@ app.use("/auth", authRoutes);
 
 // Main page route
 app.get('/', (req, res) => {
-  res.send('Medivault is runnning');
+  res.render("home");
 });
 
 

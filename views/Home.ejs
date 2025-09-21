@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mediora - Smart Telemedicine & Health Records Platform</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #3498db;
+        --accent-color: #e74c3c;
+        --success-color: #27ae60;
+        --light-bg: #ecf0f1;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+      }
+
+      .hero-section {
+        background: linear-gradient(
+          135deg,
+          var(--primary-color) 0%,
+          var(--secondary-color) 100%
+        );
+        color: white;
+        padding: 100px 0;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-section::before {
+        content: "";
+        position: absolute;
+        width: 200%;
+        height: 200%;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.03)" points="0,1000 1000,0 1000,1000"/></svg>');
+        animation: float 20s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-20px) rotate(1deg);
+        }
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+      }
+
+      .feature-card {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        height: 100%;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      .feature-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(
+          135deg,
+          var(--secondary-color),
+          var(--success-color)
+        );
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        color: white;
+        font-size: 2rem;
+      }
+
+      .stats-section {
+        background: var(--light-bg);
+        padding: 80px 0;
+      }
+
+      .stat-item {
+        text-align: center;
+        padding: 30px;
+      }
+
+      .stat-number {
+        font-size: 3rem;
+        font-weight: bold;
+        color: var(--secondary-color);
+        display: block;
+      }
+
+      .cta-section {
+        background: linear-gradient(
+          135deg,
+          var(--success-color) 0%,
+          var(--secondary-color) 100%
+        );
+        color: white;
+        padding: 80px 0;
+      }
+
+      .btn-custom {
+        padding: 12px 30px;
+        border-radius: 50px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        border: none;
+      }
+
+      .btn-primary-custom {
+        background: var(--accent-color);
+        color: white;
+      }
+
+      .btn-primary-custom:hover {
+        background: #c0392b;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+      }
+
+      .btn-outline-custom {
+        border: 2px solid white;
+        color: white;
+        background: transparent;
+      }
+
+      .btn-outline-custom:hover {
+        background: white;
+        color: var(--primary-color);
+        transform: translateY(-2px);
+      }
+
+      .navbar-brand {
+        font-weight: bold;
+        font-size: 1.5rem;
+      }
+
+      .navbar {
+        padding: 1rem 0;
+        transition: all 0.3s ease;
+      }
+
+      .navbar.scrolled {
+        background: #0d6efd !important;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .section-title {
+        position: relative;
+        margin-bottom: 50px;
+      }
+
+      .section-title::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: var(--secondary-color);
+      }
+
+      .tech-stack {
+        background: white;
+        padding: 60px 0;
+      }
+
+      .tech-item {
+        text-align: center;
+        padding: 20px;
+        margin: 10px;
+        border-radius: 10px;
+        background: var(--light-bg);
+        transition: all 0.3s ease;
+      }
+
+      .tech-item:hover {
+        background: var(--secondary-color);
+        color: white;
+        transform: scale(1.05);
+      }
+
+      .footer {
+        background: var(--primary-color);
+        color: white;
+        padding: 40px 0;
+      }
+
+      .pulse {
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav
+      class="navbar navbar-expand-lg navbar-light fixed-top"
+      style="background: transparent"
+    >
+      <div class="container">
+        <a class="navbar-brand text-white" href="#home">
+          <i class="fas fa-heartbeat me-2"></i>Mediora
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link text-white" href="#features">Features</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="#about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="#tech">Technology</a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link btn btn-outline-light ms-2 px-3"
+                href="/auth/login"
+                >Login</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link btn btn-light ms-2 px-3 text-dark"
+                href="/auth/signup"
+                >Sign Up</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6" data-aos="fade-right">
+            <div class="hero-content">
+              <h1 class="display-4 fw-bold mb-4">
+                Smart Telemedicine & Health Records Platform
+              </h1>
+              <p class="lead mb-4">
+                Mediora revolutionizes healthcare delivery by providing a
+                unified, browser-based platform that connects patients, doctors,
+                and hospitals with secure role-based access and AI-powered
+                insights.
+              </p>
+              <div class="hero-buttons">
+                <a
+                  href="/auth/signup"
+                  class="btn btn-custom btn-primary-custom btn-lg me-3 pulse"
+                >
+                  Get Started <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+                <a
+                  href="#features"
+                  class="btn btn-custom btn-outline-custom btn-lg"
+                >
+                  Learn More <i class="fas fa-play ms-2"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6" data-aos="fade-left">
+            <div class="text-center">
+              <i
+                class="fas fa-laptop-medical"
+                style="font-size: 15rem; opacity: 0.1"
+              ></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="stat-item">
+              <span class="stat-number">100%</span>
+              <p class="mb-0">Browser-Based</p>
+            </div>
+          </div>
+          <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="stat-item">
+              <span class="stat-number">3</span>
+              <p class="mb-0">User Roles</p>
+            </div>
+          </div>
+          <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="stat-item">
+              <span class="stat-number">0</span>
+              <p class="mb-0">Downloads Required</p>
+            </div>
+          </div>
+          <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="400">
+            <div class="stat-item">
+              <span class="stat-number">24/7</span>
+              <p class="mb-0">Access Available</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <h2 class="text-center section-title" data-aos="fade-up">
+              Key Features
+            </h2>
+          </div>
+        </div>
+        <div class="row g-4">
+          <div
+            class="col-lg-4 col-md-6"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-globe-americas"></i>
+              </div>
+              <h4 class="text-center mb-3">Web-Only Platform</h4>
+              <p class="text-center text-muted">
+                Access from any device with a browser. No downloads,
+                installations, or hardware upgrades required. Maximum
+                accessibility for all users.
+              </p>
+            </div>
+          </div>
+          <div
+            class="col-lg-4 col-md-6"
+            data-aos="fade-up"
+            data-aos-delay="200"
+          >
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-users-cog"></i>
+              </div>
+              <h4 class="text-center mb-3">Role-Based Access</h4>
+              <p class="text-center text-muted">
+                Secure authentication with distinct roles for patients, doctors,
+                and hospitals. Each role has appropriate permissions and access
+                levels.
+              </p>
+            </div>
+          </div>
+          <div
+            class="col-lg-4 col-md-6"
+            data-aos="fade-up"
+            data-aos-delay="300"
+          >
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-brain"></i>
+              </div>
+              <h4 class="text-center mb-3">AI-Powered Insights</h4>
+              <p class="text-center text-muted">
+                Machine learning algorithms provide personalized nutrition
+                recommendations, risk predictions, and health analytics for
+                better outcomes.
+              </p>
+            </div>
+          </div>
+          <div
+            class="col-lg-4 col-md-6"
+            data-aos="fade-up"
+            data-aos-delay="400"
+          >
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-shield-alt"></i>
+              </div>
+              <h4 class="text-center mb-3">Secure by Design</h4>
+              <p class="text-center text-muted">
+                HIPAA-grade encryption with Firebase authentication ensures your
+                medical data is always protected and compliant.
+              </p>
+            </div>
+          </div>
+          <div
+            class="col-lg-4 col-md-6"
+            data-aos="fade-up"
+            data-aos-delay="500"
+          >
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-calendar-check"></i>
+              </div>
+              <h4 class="text-center mb-3">Smart Scheduling</h4>
+              <p class="text-center text-muted">
+                Automated appointment booking and reminders reduce
+                administrative burden and improve patient care coordination.
+              </p>
+            </div>
+          </div>
+          <div
+            class="col-lg-4 col-md-6"
+            data-aos="fade-up"
+            data-aos-delay="600"
+          >
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <h4 class="text-center mb-3">Unified Dashboard</h4>
+              <p class="text-center text-muted">
+                Comprehensive view of health records, prescriptions,
+                appointments, and insights in one centralized, easy-to-use
+                interface.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-5 bg-light">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6" data-aos="fade-right">
+            <h2 class="section-title">About Mediora</h2>
+            <p class="lead">Addressing Healthcare Accessibility Challenges</p>
+            <p>
+              Healthcare delivery today is fragmented and often inaccessible,
+              especially in rural and semi-urban regions. Patients face
+              challenges including long travel distances, higher costs, limited
+              access to doctors, and lengthy waiting times.
+            </p>
+            <p>
+              Mediora solves these problems by providing a unified,
+              cost-effective platform that works on any device with internet
+              access. Our solution bridges the gap between patients and
+              healthcare providers while maintaining the highest security
+              standards.
+            </p>
+            <div class="row mt-4">
+              <div class="col-6">
+                <div class="d-flex align-items-center mb-3">
+                  <i class="fas fa-check-circle text-success me-3 fs-5"></i>
+                  <span>Cost-Effective</span>
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                  <i class="fas fa-check-circle text-success me-3 fs-5"></i>
+                  <span>Scalable Solution</span>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="d-flex align-items-center mb-3">
+                  <i class="fas fa-check-circle text-success me-3 fs-5"></i>
+                  <span>Rural-Friendly</span>
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                  <i class="fas fa-check-circle text-success me-3 fs-5"></i>
+                  <span>HIPAA Compliant</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6" data-aos="fade-left">
+            <div class="row g-3">
+              <div class="col-6">
+                <div class="card border-0 shadow-sm">
+                  <div class="card-body text-center">
+                    <i class="fas fa-user-injured text-primary fs-1 mb-3"></i>
+                    <h5>Patients</h5>
+                    <p class="small text-muted">
+                      Self-register and manage personal health records
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="card border-0 shadow-sm">
+                  <div class="card-body text-center">
+                    <i class="fas fa-user-md text-success fs-1 mb-3"></i>
+                    <h5>Doctors</h5>
+                    <p class="small text-muted">
+                      Manage patient care and update medical records
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                  <div class="card-body text-center">
+                    <i class="fas fa-hospital text-info fs-1 mb-3"></i>
+                    <h5>Hospitals & Admins</h5>
+                    <p class="small text-muted">
+                      Oversee system integration and user management
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technology Stack -->
+    <section id="tech" class="tech-stack">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <h2 class="text-center section-title" data-aos="fade-up">
+              Technology Stack
+            </h2>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div
+            class="col-lg-2 col-md-3 col-4"
+            data-aos="zoom-in"
+            data-aos-delay="100"
+          >
+            <div class="tech-item">
+              <i class="fab fa-js-square fs-1 mb-2"></i>
+              <p class="mb-0 small">JavaScript</p>
+            </div>
+          </div>
+          <div
+            class="col-lg-2 col-md-3 col-4"
+            data-aos="zoom-in"
+            data-aos-delay="200"
+          >
+            <div class="tech-item">
+              <i class="fab fa-node-js fs-1 mb-2"></i>
+              <p class="mb-0 small">Node.js</p>
+            </div>
+          </div>
+          <div
+            class="col-lg-2 col-md-3 col-4"
+            data-aos="zoom-in"
+            data-aos-delay="300"
+          >
+            <div class="tech-item">
+              <i class="fas fa-database fs-1 mb-2"></i>
+              <p class="mb-0 small">MongoDB</p>
+            </div>
+          </div>
+          <div
+            class="col-lg-2 col-md-3 col-4"
+            data-aos="zoom-in"
+            data-aos-delay="600"
+          >
+            <div class="tech-item">
+              <i class="fas fa-robot fs-1 mb-2"></i>
+              <p class="mb-0 small">Machine Learning</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 text-center" data-aos="fade-up">
+            <h2 class="display-5 fw-bold mb-4">
+              Ready to Transform Healthcare?
+            </h2>
+            <p class="lead mb-5">
+              Join Mediora today and experience the future of telemedicine and
+              health record management.
+            </p>
+            <div class="cta-buttons">
+              <a
+                href="/auth/signup"
+                class="btn btn-custom btn-outline-custom btn-lg me-3"
+              >
+                Sign Up Now <i class="fas fa-user-plus ms-2"></i>
+              </a>
+              <a href="/auth/login" class="btn btn-light btn-lg">
+                Already a Member? Login <i class="fas fa-sign-in-alt ms-2"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer
+      class="text-center text-white py-3"
+      style="background-color: #212529"
+    >
+      <div class="container">
+        <a
+          href="https://github.com/theadarsh1m/MediVault"
+          target="_blank"
+          class="btn btn-dark me-2"
+        >
+          <i class="fab fa-github"></i> Contribute on GitHub
+        </a>
+        <p class="mt-3 mb-0">
+          Developers:
+          <a
+            href="https://www.linkedin.com/in/adarshsachan01"
+            target="_blank"
+            class="text-decoration-none fw-bold text-info"
+          >
+            Adarsh Sachan </a
+          >,
+          <a
+            href="https://www.linkedin.com/in//"
+            target="_blank"
+            class="text-decoration-none fw-bold text-info"
+          >
+            to be announced
+          </a>
+        </p>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+      // Initialize AOS
+      AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100,
+      });
+
+      // Navbar scroll effect
+      window.addEventListener("scroll", function () {
+        const navbar = document.querySelector(".navbar");
+        if (window.scrollY > 50) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+      });
+
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

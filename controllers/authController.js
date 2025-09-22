@@ -67,7 +67,34 @@ async function login(req, res) {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
-    res.json({ success: true, message: "Logged in successfully" });
+    if(user.constructor.modelName.toLowerCase() == "patient") {
+      res.render("patientDashboard", {
+      user: {
+        name: user.name,
+        email: user.email,
+        role: user.constructor.modelName.toLowerCase(),
+      },
+    });
+    }
+    else if(user.constructor.modelName.toLowerCase() == "doctor") {
+      res.render("doctorDashboard", {
+      user: {
+        name: user.name,
+        email: user.email,
+        role: user.constructor.modelName.toLowerCase(),
+      },
+    });
+    } else if(user.constructor.modelName.toLowerCase() == "hospital") {
+      res.render("hospitalDashboard", {
+      user: {
+        name: user.name,
+        email: user.email,
+        role: user.constructor.modelName.toLowerCase(),
+      },
+    });
+    } else {
+      res.status(404).json({ message: "User role not recognized" });
+    }
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error", error: err.message });

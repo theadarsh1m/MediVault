@@ -1,56 +1,614 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MediVault - Sign Up</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MediVault - Join the Future of Healthcare</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            background-color: #f8f9fa;
+      :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #3498db;
+        --accent-color: #e74c3c;
+        --success-color: #27ae60;
+        --light-bg: #ecf0f1;
+        --gradient-primary: linear-gradient(
+          135deg,
+          var(--primary-color) 0%,
+          var(--secondary-color) 100%
+        );
+        --gradient-accent: linear-gradient(
+          135deg,
+          var(--accent-color) 0%,
+          #c0392b 100%
+        );
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: var(--gradient-primary);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><circle cx="200" cy="200" r="100" fill="rgba(255,255,255,0.03)"/><circle cx="800" cy="300" r="150" fill="rgba(255,255,255,0.02)"/><circle cx="300" cy="700" r="80" fill="rgba(255,255,255,0.04)"/><circle cx="700" cy="800" r="120" fill="rgba(255,255,255,0.02)"/></svg>');
+        animation: float 15s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px) rotate(0deg);
         }
+        50% {
+          transform: translateY(-20px) rotate(2deg);
+        }
+      }
+
+      .signup-container {
+        position: relative;
+        z-index: 2;
+        max-width: 900px;
+        margin: 20px auto;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+      }
+
+      .signup-left {
+        background: var(--gradient-primary);
+        color: white;
+        padding: 60px 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+      }
+
+      .signup-left::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon fill="rgba(255,255,255,0.1)" points="0,100 100,0 100,100"/></svg>');
+      }
+
+      .signup-left-content {
+        position: relative;
+        z-index: 2;
+      }
+
+      .signup-right {
+        padding: 60px 40px;
+      }
+
+      .brand-logo {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+      }
+
+      .brand-logo i {
+        margin-right: 15px;
+        font-size: 3rem;
+      }
+
+      .form-floating {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-floating > .form-control {
+        border: 2px solid #e9ecef;
+        border-radius: 15px;
+        padding: 1.625rem 1rem 0.625rem;
+        height: auto;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+      }
+
+      .form-floating > .form-control:focus {
+        border-color: var(--secondary-color);
+        box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+        transform: translateY(-2px);
+      }
+
+      .form-floating > .form-select {
+        border: 2px solid #e9ecef;
+        border-radius: 15px;
+        padding-top: 1.625rem;
+        padding-bottom: 0.625rem;
+        height: auto;
+        transition: all 0.3s ease;
+      }
+
+      .form-floating > .form-select:focus {
+        border-color: var(--secondary-color);
+        box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+        transform: translateY(-2px);
+      }
+
+      .form-floating > label {
+        padding: 1rem;
+        color: #6c757d;
+      }
+
+      .btn-signup {
+        background: linear-gradient(
+          135deg,
+          #007bff 0%,
+          #0056b3 100%
+        ); /* Blue gradient */
+        border: none;
+        border-radius: 50px;
+        padding: 15px 40px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        color: white;
+      }
+
+      .btn-signup:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 35px rgba(0, 123, 255, 0.4);
+        background: linear-gradient(135deg, #0056b3 0%, #004080 100%);
+      }
+
+      .btn-signup:active {
+        transform: translateY(0);
+      }
+
+      .role-cards {
+        display: none;
+        margin-top: 20px;
+      }
+
+      .role-card {
+        border: 2px solid #e9ecef;
+        border-radius: 15px;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+      }
+
+      .role-card:hover {
+        border-color: var(--secondary-color);
+        background: rgba(52, 152, 219, 0.1);
+        transform: translateY(-5px);
+      }
+
+      .role-card.selected {
+        border-color: var(--secondary-color);
+        background: rgba(52, 152, 219, 0.15);
+        box-shadow: 0 10px 25px rgba(52, 152, 219, 0.2);
+      }
+
+      .role-card i {
+        font-size: 3rem;
+        margin-bottom: 15px;
+        color: var(--secondary-color);
+      }
+
+      .role-card h5 {
+        margin-bottom: 10px;
+        color: var(--primary-color);
+      }
+
+      .role-card p {
+        color: #6c757d;
+        font-size: 0.9rem;
+        margin-bottom: 0;
+      }
+
+      .feature-list {
+        list-style: none;
+        padding: 0;
+        margin-top: 30px;
+      }
+
+      .feature-list li {
+        padding: 10px 0;
+        display: flex;
+        align-items: center;
+      }
+
+      .feature-list li i {
+        color: rgba(255, 255, 255, 0.8);
+        margin-right: 15px;
+        width: 20px;
+      }
+
+      .back-to-home {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50px;
+        padding: 10px 20px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        z-index: 1000;
+      }
+
+      .back-to-home:hover {
+        background: white;
+        color: var(--primary-color);
+        transform: translateY(-2px);
+      }
+
+      .login-link {
+        text-align: center;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #e9ecef;
+      }
+
+      .login-link a {
+        color: var(--secondary-color);
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .login-link a:hover {
+        color: var(--primary-color);
+        text-decoration: underline;
+      }
+
+      .password-strength {
+        margin-top: 10px;
+        font-size: 0.8rem;
+      }
+
+      .strength-weak {
+        color: #e74c3c;
+      }
+      .strength-medium {
+        color: #f39c12;
+      }
+      .strength-strong {
+        color: #27ae60;
+      }
+
+      @media (max-width: 768px) {
         .signup-container {
-            max-width: 500px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+          margin: 10px;
+          border-radius: 15px;
         }
+
+        .signup-left,
+        .signup-right {
+          padding: 40px 30px;
+        }
+
+        .brand-logo {
+          font-size: 2rem;
+        }
+
+        .brand-logo i {
+          font-size: 2.5rem;
+        }
+      }
+
+      .animate-on-load {
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 0.8s ease forwards;
+      }
+
+      @keyframes fadeInUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <a href="/" class="back-to-home">
+      <i class="fas fa-arrow-left me-2"></i>Back to Home
+    </a>
+
     <div class="container">
-        <div class="signup-container">
-            <h2 class="text-center mb-4">Sign Up for MediVault</h2>
-            <form action="/auth/signup" method="POST">
-                <div class="mb-3">
-                    <label for="role" class="form-label">Select Role:</label>
-                    <select class="form-select" id="role" name="role" required>
-                        <option value="">Choose...</option>
-                        <option value="patient">Patient</option>
-                        <option value="doctor">Doctor</option>
-                        <option value="hospital">Hospital</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" name="name" required>
-                </div>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" required>
-                </div>
-                <button type="submit" class="btn btn-primary w-100">Sign Up</button>
-            </form>
-            <div class="text-center mt-3">
-                Already have an account? <a href="/auth/login">Login here</a>
+      <div class="signup-container animate-on-load">
+        <div class="row g-0">
+          <!-- Left Side - Branding & Info -->
+          <div class="col-lg-5 signup-left">
+            <div class="signup-left-content">
+              <div class="brand-logo">
+                <i class="fas fa-heartbeat"></i>
+                MediVault
+              </div>
+              <h3 class="mb-4">Join the Future of Healthcare</h3>
+              <p class="lead mb-4">
+                Create your account and access a unified platform for
+                telemedicine, health records, and AI-powered insights.
+              </p>
+
+              <ul class="feature-list">
+                <li>
+                  <i class="fas fa-check-circle"></i>
+                  <span>Secure, role-based access</span>
+                </li>
+                <li>
+                  <i class="fas fa-check-circle"></i>
+                  <span>AI-powered health insights</span>
+                </li>
+                <li>
+                  <i class="fas fa-check-circle"></i>
+                  <span>No downloads required</span>
+                </li>
+                <li>
+                  <i class="fas fa-check-circle"></i>
+                  <span>24/7 accessibility</span>
+                </li>
+                <li>
+                  <i class="fas fa-check-circle"></i>
+                  <span>HIPAA-grade security</span>
+                </li>
+              </ul>
             </div>
+          </div>
+
+          <!-- Right Side - Form -->
+          <div class="col-lg-7 signup-right">
+            <h2
+              class="mb-4 text-center"
+              style="color: var(--primary-color); font-weight: bold"
+            >
+              Create Your Account
+            </h2>
+
+            <form action="/auth/signup" method="POST" id="signupForm">
+              <!-- Role Selection -->
+              <div class="mb-4">
+                <label
+                  class="form-label fw-semibold"
+                  style="color: var(--primary-color)"
+                >
+                  I am joining as a:
+                </label>
+                <div class="row g-3 role-cards d-flex flex-row">
+                  <div class="col-md-4">
+                    <div class="role-card" data-role="patient">
+                      <i class="fas fa-user"></i>
+                      <h5>Patient</h5>
+                      <p>Access your health records and connect with doctors</p>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="role-card" data-role="doctor">
+                      <i class="fas fa-user-md"></i>
+                      <h5>Doctor</h5>
+                      <p>Manage patient care and provide consultations</p>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="role-card" data-role="hospital">
+                      <i class="fas fa-hospital"></i>
+                      <h5>Hospital</h5>
+                      <p>Oversee system integration and user management</p>
+                    </div>
+                  </div>
+                </div>
+
+                <select
+                  class="form-select d-none"
+                  id="role"
+                  name="role"
+                  required
+                >
+                  <option value="">Choose your role...</option>
+                  <option value="patient">Patient</option>
+                  <option value="doctor">Doctor</option>
+                  <option value="hospital">Hospital</option>
+                </select>
+              </div>
+
+              <!-- Name Field -->
+              <div class="form-floating">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  name="name"
+                  placeholder="Your Full Name"
+                  required
+                />
+                <label for="name">
+                  <i class="fas fa-user me-2"></i>Full Name
+                </label>
+              </div>
+
+              <!-- Email Field -->
+              <div class="form-floating">
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  name="email"
+                  placeholder="name@example.com"
+                  required
+                />
+                <label for="email">
+                  <i class="fas fa-envelope me-2"></i>Email Address
+                </label>
+              </div>
+
+              <!-- Password Field -->
+              <div class="form-floating">
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  name="password"
+                  placeholder="Password"
+                  required
+                />
+                <label for="password">
+                  <i class="fas fa-lock me-2"></i>Password
+                </label>
+                <div class="password-strength" id="passwordStrength"></div>
+              </div>
+
+              <!-- Submit Button -->
+              <button
+                type="submit"
+                class="btn btn-signup w-100 mb-3"
+                disabled
+                id="submitBtn"
+              >
+                <i class="fas fa-rocket me-2"></i>Create My Account
+              </button>
+            </form>
+
+            <div class="login-link">
+              <p class="mb-0">
+                Already have an account?
+                <a href="/auth/login">Sign in here</a>
+              </p>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-</body>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+      // Show role cards on page load
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelector(".role-cards").style.display = "block";
+      });
+
+      // Role selection functionality
+      const roleCards = document.querySelectorAll(".role-card");
+      const roleSelect = document.getElementById("role");
+      const submitBtn = document.getElementById("submitBtn");
+      const form = document.getElementById("signupForm");
+
+      roleCards.forEach((card) => {
+        card.addEventListener("click", function () {
+          // Remove selected class from all cards
+          roleCards.forEach((c) => c.classList.remove("selected"));
+
+          // Add selected class to clicked card
+          this.classList.add("selected");
+
+          // Update hidden select value
+          const role = this.dataset.role;
+          roleSelect.value = role;
+
+          // Enable submit button if form is valid
+          validateForm();
+        });
+      });
+
+      // Password strength checker
+      const passwordInput = document.getElementById("password");
+      const passwordStrength = document.getElementById("passwordStrength");
+
+      passwordInput.addEventListener("input", function () {
+        const password = this.value;
+        let strength = "";
+        let strengthClass = "";
+
+        if (password.length === 0) {
+          strength = "";
+        } else if (password.length < 6) {
+          strength = "Weak - At least 6 characters required";
+          strengthClass = "strength-weak";
+        } else if (password.length < 8) {
+          strength = "Medium - Consider adding numbers and symbols";
+          strengthClass = "strength-medium";
+        } else if (
+          password.match(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/
+          )
+        ) {
+          strength = "Strong - Excellent password!";
+          strengthClass = "strength-strong";
+        } else {
+          strength =
+            "Medium - Add uppercase, numbers, and symbols for better security";
+          strengthClass = "strength-medium";
+        }
+
+        passwordStrength.textContent = strength;
+        passwordStrength.className = `password-strength ${strengthClass}`;
+
+        validateForm();
+      });
+
+      // Form validation
+      function validateForm() {
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const role = document.getElementById("role").value;
+
+        const isValid = name && email && password.length >= 6 && role;
+        submitBtn.disabled = !isValid;
+      }
+
+      // Add event listeners for form validation
+      document.getElementById("name").addEventListener("input", validateForm);
+      document.getElementById("email").addEventListener("input", validateForm);
+      passwordInput.addEventListener("input", validateForm);
+
+      // Form submission animation
+      form.addEventListener("submit", function (e) {
+        submitBtn.innerHTML =
+          '<i class="fas fa-spinner fa-spin me-2"></i>Creating Account...';
+        submitBtn.disabled = true;
+      });
+
+      // Smooth animations for form elements
+      const formElements = document.querySelectorAll(
+        ".form-floating, .role-cards, .btn-signup"
+      );
+      formElements.forEach((el, index) => {
+        el.style.animationDelay = `${index * 0.1}s`;
+        el.classList.add("animate-on-load");
+      });
+    </script>
+  </body>
 </html>

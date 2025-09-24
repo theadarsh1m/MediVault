@@ -67,34 +67,24 @@ async function login(req, res) {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
-    if(user.constructor.modelName.toLowerCase() == "patient") {
-      res.render("patientDashboard", {
+    const dashboards = {
+      patient: "patientDashboard",
+      doctor: "doctorDashboard",
+      hospital: "hospitalDashboard",
+    };
+
+    const role = user.constructor.modelName.toLowerCase();
+    const view = dashboards[role]; // the dashboard which we have to render
+
+    if (!view) return res.status(404).json({ message: "Role not recognized" });
+
+    res.render(view, {
       user: {
         name: user.name,
         email: user.email,
-        role: user.constructor.modelName.toLowerCase(),
+        role,
       },
     });
-    }
-    else if(user.constructor.modelName.toLowerCase() == "doctor") {
-      res.render("doctorDashboard", {
-      user: {
-        name: user.name,
-        email: user.email,
-        role: user.constructor.modelName.toLowerCase(),
-      },
-    });
-    } else if(user.constructor.modelName.toLowerCase() == "hospital") {
-      res.render("hospitalDashboard", {
-      user: {
-        name: user.name,
-        email: user.email,
-        role: user.constructor.modelName.toLowerCase(),
-      },
-    });
-    } else {
-      res.status(404).json({ message: "User role not recognized" });
-    }
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error", error: err.message });

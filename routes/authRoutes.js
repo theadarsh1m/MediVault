@@ -15,4 +15,10 @@ router.post("/signup", signup);
 
 router.post("/login", login);
 
+// logout route
+router.get("/logout", (req, res) => {
+  res.clearCookie("token");
+  res.redirect("/auth/login"); // or res.json({ message: "Logged out successfully" });
+});
+
 module.exports = router;

@@ -2,9 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const path = require("path");
+const cookieParser = require('cookie-parser');
 
 const { connectToMongoDB } = require('./connect');
 const authRoutes = require('./routes/authRoutes');
+const dashboardRoutes = require('./routes/dashboardRoutes');
 
 const app = express();
 dotenv.config();
@@ -17,11 +19,14 @@ connectToMongoDB(process.env.MONGO_URI);
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
 
+// Middleware
 app.use(express.json());  // Express built-in middleware to parse JSON
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser()); // to parse cookies
 
 // auth routes -> jitne bhi req /auth k baad aegi vo authRoutes handle krega
 app.use("/auth", authRoutes);
+app.use("/dashboard", dashboardRoutes);
 
 // Main page route
 app.get('/', (req, res) => {

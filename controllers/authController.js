@@ -53,8 +53,10 @@ async function login(req, res) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
+    const role = user.constructor.modelName.toLowerCase();
+
     const token = jwt.sign(
-      { id: user._id, role: user.constructor.modelName.toLowerCase() },
+      { id: user._id, role },
       JWT_SECRET,
       { expiresIn: JWT_EXPIRES_IN }
     );
@@ -67,24 +69,7 @@ async function login(req, res) {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
-    const dashboards = {
-      patient: "patientDashboard",
-      doctor: "doctorDashboard",
-      hospital: "hospitalDashboard",
-    };
-
-    const role = user.constructor.modelName.toLowerCase();
-    const view = dashboards[role]; // the dashboard which we have to render
-
-    if (!view) return res.status(404).json({ message: "Role not recognized" });
-
-    res.render(view, {
-      user: {
-        name: user.name,
-        email: user.email,
-        role,
-      },
-    });
+    res.redirect(`/dashboard/${role}`);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error", error: err.message });

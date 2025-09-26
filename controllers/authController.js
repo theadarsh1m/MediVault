@@ -8,18 +8,51 @@ const Hospital = require("../models/Hospital");
 const JWT_SECRET = process.env.JWT_SECRET || "supersecret";
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "1d";
 
+// to generate UID
+async function generateUID(role) {
+  let count;
+  let prefix;
+
+  if (role === "patient") {
+    count = await Patient.countDocuments();
+    prefix = "PAT";
+  } else if (role === "doctor") {
+    count = await Doctor.countDocuments();
+    prefix = "DOC";
+  } else if (role === "hospital") {
+    count = await Hospital.countDocuments();
+    prefix = "HOS";
+  } else {
+    throw new Error("Invalid role for UID generation");
+  }
+
+  // e.g., PAT-0001, DOC-0001
+  const number = (count + 1).toString().padStart(4, "0");
+  return `${prefix}-${number}`;
+}
+
 // Signup Controller
 async function signup(req, res) {
   const { name, email, password, role } = req.body;
+  // Check if user already exists in any collection
+  const existingUser =
+    (await Patient.findOne({ email })) ||
+    (await Doctor.findOne({ email })) ||
+    (await Hospital.findOne({ email }));
+
+  if (existingUser) {
+    return res.status(400).json({ message: "Email already registered" });
+  }
 
   try {
+    const uid = await generateUID(role);
     let user;
     if (role === "patient") {
-      user = new Patient({ name, email, password });
+      user = new Patient({ name, email, password, uid });
     } else if (role === "doctor") {
-      user = new Doctor({ name, email, password });
+      user = new Doctor({ name, email, password, uid });
     } else if (role === "hospital") {
-      user = new Hospital({ name, email, password });
+      user = new Hospital({ name, email, password, uid });
     } else {
       return res.status(400).json({ message: "Invalid role" });
     }
@@ -55,11 +88,9 @@ async function login(req, res) {
 
     const role = user.constructor.modelName.toLowerCase();
 
-    const token = jwt.sign(
-      { id: user._id, role },
-      JWT_SECRET,
-      { expiresIn: JWT_EXPIRES_IN }
-    );
+    const token = jwt.sign({ id: user._id, role }, JWT_SECRET, {
+      expiresIn: JWT_EXPIRES_IN,
+    });
 
     // Set cookie
     res.cookie("token", token, {

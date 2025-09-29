@@ -3,611 +3,781 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MediVault - Join the Future of Healthcare</title>
+    <title>Sign Up - Mediora</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css"
-      rel="stylesheet"
-    />
+
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
     <style>
-      :root {
-        --primary-color: #2c3e50;
-        --secondary-color: #3498db;
-        --accent-color: #e74c3c;
-        --success-color: #27ae60;
-        --light-bg: #ecf0f1;
-        --gradient-primary: linear-gradient(
-          135deg,
-          var(--primary-color) 0%,
-          var(--secondary-color) 100%
-        );
-        --gradient-accent: linear-gradient(
-          135deg,
-          var(--accent-color) 0%,
-          #c0392b 100%
-        );
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
+      /* CSS Variables for Theming */
       body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background: var(--gradient-primary);
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        position: relative;
-        overflow-x: hidden;
+        --c-glass: #bbbbbc;
+        --c-light: #fff;
+        --c-dark: #000;
+        --c-content: #224;
+        --c-action: #0052f5;
+        --c-bg: #e8e8e9;
+        --text-secondary: #475569;
+        --role-card-bg: rgba(255, 255, 255, 0.2);
+        --role-card-hover-bg: rgba(255, 255, 255, 0.4);
+        --role-card-active-bg: rgba(59, 130, 246, 0.1);
+        --glass-reflex-dark: 1;
+        --glass-reflex-light: 1;
+        --saturation: 150%;
+        font-family: "Inter", sans-serif;
+        background: var(--c-bg);
+        color: var(--c-content);
+        transition: background 400ms cubic-bezier(1, 0, 0.4, 1),
+          color 400ms cubic-bezier(1, 0, 0.4, 1);
+        overflow: hidden;
       }
 
-      body::before {
-        content: "";
-        position: absolute;
+      body:has(input[value="dark"]:checked) {
+        --c-content: #e1e1e1;
+        --c-action: #03d5ff;
+        --c-bg: #1b1b1d;
+        --text-secondary: #cbd5e1;
+        --role-card-bg: rgba(51, 65, 85, 0.3);
+        --role-card-hover-bg: rgba(51, 65, 85, 0.6);
+        --role-card-active-bg: rgba(96, 165, 250, 0.1);
+        --glass-reflex-dark: 2;
+        --glass-reflex-light: 0.3;
+        --saturation: 150%;
+      }
+
+      body:has(input[value="dim"]:checked) {
+        --c-light: #99deff;
+        --c-dark: #20001b;
+        --c-glass: hsl(335 250% 74% / 1);
+        --c-content: #d5dbe2;
+        --c-action: #ff48a9;
+        --c-bg: #152433;
+        --text-secondary: #cbd5e1;
+        --role-card-bg: rgba(30, 58, 87, 0.3);
+        --role-card-hover-bg: rgba(30, 58, 87, 0.6);
+        --role-card-active-bg: rgba(255, 72, 169, 0.1);
+        --glass-reflex-dark: 2;
+        --glass-reflex-light: 0.7;
+        --saturation: 200%;
+      }
+
+      #plexus-bg {
+        position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><circle cx="200" cy="200" r="100" fill="rgba(255,255,255,0.03)"/><circle cx="800" cy="300" r="150" fill="rgba(255,255,255,0.02)"/><circle cx="300" cy="700" r="80" fill="rgba(255,255,255,0.04)"/><circle cx="700" cy="800" r="120" fill="rgba(255,255,255,0.02)"/></svg>');
-        animation: float 15s ease-in-out infinite;
+        z-index: 0;
       }
 
-      @keyframes float {
-        0%,
-        100% {
-          transform: translateY(0px) rotate(0deg);
-        }
-        50% {
-          transform: translateY(-20px) rotate(2deg);
-        }
-      }
-
-      .signup-container {
-        position: relative;
-        z-index: 2;
-        max-width: 900px;
-        margin: 20px auto;
-        background: white;
-        border-radius: 20px;
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-        overflow: hidden;
-      }
-
-      .signup-left {
-        background: var(--gradient-primary);
-        color: white;
-        padding: 60px 40px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        position: relative;
-      }
-
-      .signup-left::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 100%;
-        height: 100%;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon fill="rgba(255,255,255,0.1)" points="0,100 100,0 100,100"/></svg>');
-      }
-
-      .signup-left-content {
-        position: relative;
-        z-index: 2;
-      }
-
-      .signup-right {
-        padding: 60px 40px;
-      }
-
-      .brand-logo {
-        font-size: 2.5rem;
-        font-weight: bold;
-        margin-bottom: 1rem;
+      .page-container {
+        min-height: 100vh;
         display: flex;
         align-items: center;
-      }
-
-      .brand-logo i {
-        margin-right: 15px;
-        font-size: 3rem;
-      }
-
-      .form-floating {
-        margin-bottom: 1.5rem;
-      }
-
-      .form-floating > .form-control {
-        border: 2px solid #e9ecef;
-        border-radius: 15px;
-        padding: 1.625rem 1rem 0.625rem;
-        height: auto;
-        font-size: 1rem;
-        transition: all 0.3s ease;
-      }
-
-      .form-floating > .form-control:focus {
-        border-color: var(--secondary-color);
-        box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
-        transform: translateY(-2px);
-      }
-
-      .form-floating > .form-select {
-        border: 2px solid #e9ecef;
-        border-radius: 15px;
-        padding-top: 1.625rem;
-        padding-bottom: 0.625rem;
-        height: auto;
-        transition: all 0.3s ease;
-      }
-
-      .form-floating > .form-select:focus {
-        border-color: var(--secondary-color);
-        box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
-        transform: translateY(-2px);
-      }
-
-      .form-floating > label {
+        justify-content: center;
         padding: 1rem;
-        color: #6c757d;
-      }
-
-      .btn-signup {
-        background: linear-gradient(
-          135deg,
-          #007bff 0%,
-          #0056b3 100%
-        ); /* Blue gradient */
-        border: none;
-        border-radius: 50px;
-        padding: 15px 40px;
-        font-weight: 600;
-        font-size: 1.1rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        transition: all 0.3s ease;
         position: relative;
+        z-index: 1;
+      }
+
+      .liquidGlass-wrapper {
+        position: relative;
+        display: flex;
         overflow: hidden;
-        color: white;
+        border-radius: 1.5rem;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 0 20px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       }
 
-      .btn-signup:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 15px 35px rgba(0, 123, 255, 0.4);
-        background: linear-gradient(135deg, #0056b3 0%, #004080 100%);
+      .liquidGlass-wrapper:hover {
+        transform: scale(1.015);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22), 0 0 30px rgba(0, 0, 0, 0.12);
       }
 
-      .btn-signup:active {
-        transform: translateY(0);
+      .liquidGlass-effect {
+        position: absolute;
+        z-index: 0;
+        inset: 0;
+        backdrop-filter: blur(4px);
+        filter: url(#glass-distortion);
+        overflow: hidden;
+        isolation: isolate;
+      }
+      .liquidGlass-tint {
+        z-index: 1;
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.15);
+      }
+      .liquidGlass-shine {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        overflow: hidden;
+        box-shadow: inset 2px 2px 1px 0 rgba(255, 255, 255, 0.25),
+          inset -1px -1px 1px 1px rgba(255, 255, 255, 0.1);
+      }
+      .liquidGlass-content {
+        z-index: 3;
+        color: var(--c-content);
+        padding: 2rem;
+        width: 100%;
       }
 
-      .role-cards {
-        display: none;
-        margin-top: 20px;
+      @media (min-width: 640px) {
+        .liquidGlass-content {
+          padding: 3rem;
+        }
+      }
+
+      .liquidGlass-content h1,
+      .liquidGlass-content p,
+      .liquidGlass-content h3,
+      .liquidGlass-content a {
+        color: var(--c-content);
+        transition: color 400ms ease;
+      }
+      .liquidGlass-content p {
+        color: var(--text-secondary);
+      }
+      .liquidGlass-content a {
+        color: var(--c-action);
+      }
+
+      .inner-box-container {
+        padding: 0.5rem;
+        border-radius: 1.25rem;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.5);
+      }
+      .inner-box-container:hover {
+        background-color: var(--role-card-bg);
+        padding: 0.6rem;
       }
 
       .role-card {
-        border: 2px solid #e9ecef;
-        border-radius: 15px;
-        padding: 20px;
+        background: var(--role-card-bg);
+        border: 2px solid transparent;
+        border-radius: 1rem;
+        padding: 1.25rem;
         text-align: center;
         cursor: pointer;
         transition: all 0.3s ease;
-        background: #f8f9fa;
+        backdrop-filter: blur(10px);
       }
-
       .role-card:hover {
-        border-color: var(--secondary-color);
-        background: rgba(52, 152, 219, 0.1);
-        transform: translateY(-5px);
+        transform: translateY(-5px) scale(1.05);
+        background: var(--role-card-hover-bg);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
       }
-
-      .role-card.selected {
-        border-color: var(--secondary-color);
-        background: rgba(52, 152, 219, 0.15);
-        box-shadow: 0 10px 25px rgba(52, 152, 219, 0.2);
+      .role-card.active {
+        border-color: var(--c-action);
+        background: var(--role-card-active-bg);
+        transform: translateY(-5px) scale(1.05);
       }
-
       .role-card i {
-        font-size: 3rem;
-        margin-bottom: 15px;
-        color: var(--secondary-color);
+        color: var(--c-action);
       }
 
-      .role-card h5 {
-        margin-bottom: 10px;
-        color: var(--primary-color);
+      .form-input {
+        background-color: var(--role-card-bg);
+        border: 1px solid transparent;
+        color: var(--c-content);
+        transition: all 0.3s ease;
+      }
+      .form-input::placeholder {
+        color: var(--text-secondary);
+      }
+      .form-input:focus {
+        border-color: var(--c-action);
+        background-color: transparent;
+        outline: none;
+        box-shadow: none;
       }
 
-      .role-card p {
-        color: #6c757d;
-        font-size: 0.9rem;
-        margin-bottom: 0;
+      .btn-primary {
+        background: var(--c-action);
+        box-shadow: 0 4px 20px
+          color-mix(in srgb, var(--c-action) 30%, transparent);
+        transition: all 0.3s ease;
+        font-weight: 600;
+      }
+      .btn-primary:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 7px 25px
+          color-mix(in srgb, var(--c-action) 40%, transparent);
+        filter: brightness(1.1);
       }
 
-      .feature-list {
-        list-style: none;
-        padding: 0;
-        margin-top: 30px;
+      #signup-form-container {
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        opacity: 0;
+      }
+      #signup-form-container.show {
+        max-height: 500px;
+        opacity: 1;
       }
 
-      .feature-list li {
-        padding: 10px 0;
+      .switcher {
+        position: fixed;
+        z-index: 100;
+        top: 20px;
+        right: 20px;
         display: flex;
         align-items: center;
+        gap: 8px;
+        width: 244px;
+        max-width: 244px;
+        height: 70px;
+        box-sizing: border-box;
+        padding: 8px 12px 10px;
+        margin: 0 auto;
+        border: none;
+        border-radius: 99em;
+        background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
+        backdrop-filter: blur(8px) saturate(var(--saturation));
+        -webkit-backdrop-filter: blur(8px) saturate(var(--saturation));
+        box-shadow: inset 0 0 0 1px
+            color-mix(
+              in srgb,
+              var(--c-light) calc(var(--glass-reflex-light) * 10%),
+              transparent
+            ),
+          inset 1.8px 3px 0px -2px color-mix(in srgb, var(--c-light)
+                calc(var(--glass-reflex-light) * 90%), transparent),
+          inset -2px -2px 0px -2px color-mix(in srgb, var(--c-light)
+                calc(var(--glass-reflex-light) * 80%), transparent),
+          inset -3px -8px 1px -6px color-mix(in srgb, var(--c-light)
+                calc(var(--glass-reflex-light) * 60%), transparent),
+          inset -0.3px -1px 4px 0px
+            color-mix(
+              in srgb,
+              var(--c-dark) calc(var(--glass-reflex-dark) * 12%),
+              transparent
+            ),
+          inset -1.5px 2.5px 0px -2px
+            color-mix(
+              in srgb,
+              var(--c-dark) calc(var(--glass-reflex-dark) * 20%),
+              transparent
+            ),
+          inset 0px 3px 4px -2px color-mix(in srgb, var(--c-dark)
+                calc(var(--glass-reflex-dark) * 20%), transparent),
+          inset 2px -6.5px 1px -4px
+            color-mix(
+              in srgb,
+              var(--c-dark) calc(var(--glass-reflex-dark) * 10%),
+              transparent
+            ),
+          0px 1px 5px 0px
+            color-mix(
+              in srgb,
+              var(--c-dark) calc(var(--glass-reflex-dark) * 10%),
+              transparent
+            ),
+          0px 6px 16px 0px
+            color-mix(
+              in srgb,
+              var(--c-dark) calc(var(--glass-reflex-dark) * 8%),
+              transparent
+            );
+        transition: background-color 400ms cubic-bezier(1, 0, 0.4, 1),
+          box-shadow 400ms cubic-bezier(1, 0, 0.4, 1);
       }
-
-      .feature-list li i {
-        color: rgba(255, 255, 255, 0.8);
-        margin-right: 15px;
-        width: 20px;
-      }
-
-      .back-to-home {
+      .switcher__legend {
         position: absolute;
-        top: 20px;
-        left: 20px;
-        background: rgba(255, 255, 255, 0.2);
-        color: white;
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        border-radius: 50px;
-        padding: 10px 20px;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        z-index: 1000;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        border: 0;
+        padding: 0;
+        white-space: nowrap;
+        clip-path: inset(100%);
+        clip: rect(0 0 0 0);
+        overflow: hidden;
       }
-
-      .back-to-home:hover {
-        background: white;
-        color: var(--primary-color);
-        transform: translateY(-2px);
+      .switcher__input {
+        clip: rect(0 0 0 0);
+        clip-path: inset(100%);
+        height: 1px;
+        width: 1px;
+        overflow: hidden;
+        position: absolute;
+        white-space: nowrap;
       }
-
-      .login-link {
-        text-align: center;
-        margin-top: 30px;
-        padding-top: 20px;
-        border-top: 1px solid #e9ecef;
+      .switcher__icon {
+        display: block;
+        width: 100%;
+        transition: scale 200ms cubic-bezier(0.5, 0, 0, 1);
       }
-
-      .login-link a {
-        color: var(--secondary-color);
-        text-decoration: none;
-        font-weight: 600;
-        transition: all 0.3s ease;
+      .switcher__filter {
+        position: absolute;
+        width: 0;
+        height: 0;
+        z-index: -1;
       }
-
-      .login-link a:hover {
-        color: var(--primary-color);
-        text-decoration: underline;
+      .switcher__option {
+        --c: var(--c-content);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 16px;
+        width: 68px;
+        height: 100%;
+        box-sizing: border-box;
+        border-radius: 99em;
+        opacity: 1;
+        transition: all 160ms;
       }
-
-      .password-strength {
-        margin-top: 10px;
-        font-size: 0.8rem;
+      .switcher__option:hover {
+        --c: var(--c-action);
+        cursor: pointer;
       }
-
-      .strength-weak {
-        color: #e74c3c;
+      .switcher__option:hover .switcher__icon {
+        scale: 1.2;
       }
-      .strength-medium {
-        color: #f39c12;
+      .switcher__option:has(input:checked) {
+        --c: var(--c-content);
+        cursor: auto;
       }
-      .strength-strong {
-        color: #27ae60;
+      .switcher__option:has(input:checked) .switcher__icon {
+        scale: 1;
       }
-
-      @media (max-width: 768px) {
-        .signup-container {
-          margin: 10px;
-          border-radius: 15px;
+      .switcher::after {
+        content: "";
+        position: absolute;
+        left: 4px;
+        top: 4px;
+        display: block;
+        width: 84px;
+        height: calc(100% - 10px);
+        border-radius: 99em;
+        background-color: color-mix(in srgb, var(--c-glass) 36%, transparent);
+        z-index: -1;
+        box-shadow: inset 0 0 0 1px
+            color-mix(
+              in srgb,
+              var(--c-light) calc(var(--glass-reflex-light) * 10%),
+              transparent
+            ),
+          inset 2px 1px 0px -1px color-mix(in srgb, var(--c-light)
+                calc(var(--glass-reflex-light) * 90%), transparent),
+          inset -1.5px -1px 0px -1px color-mix(in srgb, var(--c-light)
+                calc(var(--glass-reflex-light) * 80%), transparent),
+          inset -2px -6px 1px -5px color-mix(in srgb, var(--c-light)
+                calc(var(--glass-reflex-light) * 60%), transparent),
+          inset -1px 2px 3px -1px
+            color-mix(
+              in srgb,
+              var(--c-dark) calc(var(--glass-reflex-dark) * 20%),
+              transparent
+            ),
+          inset 0px -4px 1px -2px
+            color-mix(
+              in srgb,
+              var(--c-dark) calc(var(--glass-reflex-dark) * 10%),
+              transparent
+            ),
+          0px 3px 6px 0px
+            color-mix(
+              in srgb,
+              var(--c-dark) calc(var(--glass-reflex-dark) * 8%),
+              transparent
+            );
+      }
+      .switcher:has(input[c-option="1"]:checked)::after {
+        translate: 0 0;
+        transform-origin: right;
+        transition: background-color 400ms cubic-bezier(1, 0, 0.4, 1),
+          box-shadow 400ms cubic-bezier(1, 0, 0.4, 1),
+          translate 400ms cubic-bezier(1, 0, 0.4, 1);
+        animation: scaleToggle 440ms ease;
+      }
+      .switcher:has(input[c-option="2"]:checked)::after {
+        translate: 76px 0;
+        transition: background-color 400ms cubic-bezier(1, 0, 0.4, 1),
+          box-shadow 400ms cubic-bezier(1, 0, 0.4, 1),
+          translate 400ms cubic-bezier(1, 0, 0.4, 1);
+        animation: scaleToggle2 440ms ease;
+      }
+      .switcher[c-previous="1"]:has(input[c-option="2"]:checked)::after {
+        transform-origin: left;
+      }
+      .switcher[c-previous="3"]:has(input[c-option="2"]:checked)::after {
+        transform-origin: right;
+      }
+      .switcher:has(input[c-option="3"]:checked)::after {
+        translate: 152px 0;
+        transform-origin: left;
+        transition: background-color 400ms cubic-bezier(1, 0, 0.4, 1),
+          box-shadow 400ms cubic-bezier(1, 0, 0.4, 1),
+          translate 400ms cubic-bezier(1, 0, 0.4, 1);
+        animation: scaleToggle3 440ms ease;
+      }
+      @keyframes scaleToggle {
+        0% {
+          scale: 1 1;
         }
-
-        .signup-left,
-        .signup-right {
-          padding: 40px 30px;
+        50% {
+          scale: 1.1 1;
         }
-
-        .brand-logo {
-          font-size: 2rem;
-        }
-
-        .brand-logo i {
-          font-size: 2.5rem;
+        100% {
+          scale: 1 1;
         }
       }
-
-      .animate-on-load {
-        opacity: 0;
-        transform: translateY(30px);
-        animation: fadeInUp 0.8s ease forwards;
+      @keyframes scaleToggle2 {
+        0% {
+          scale: 1 1;
+        }
+        50% {
+          scale: 1.2 1;
+        }
+        100% {
+          scale: 1 1;
+        }
       }
-
-      @keyframes fadeInUp {
-        to {
-          opacity: 1;
-          transform: translateY(0);
+      @keyframes scaleToggle3 {
+        0% {
+          scale: 1 1;
+        }
+        50% {
+          scale: 1.1 1;
+        }
+        100% {
+          scale: 1 1;
         }
       }
     </style>
   </head>
   <body>
-    <a href="/" class="back-to-home">
-      <i class="fas fa-arrow-left me-2"></i>Back to Home
-    </a>
+    <fieldset class="switcher">
+      <legend class="switcher__legend">Choose theme</legend>
+      <label class="switcher__option">
+        <input
+          class="switcher__input"
+          type="radio"
+          name="theme"
+          value="light"
+          c-option="1"
+          checked
+        />
+        <svg
+          class="switcher__icon"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 36 36"
+        >
+          <path
+            fill="var(--c)"
+            fill-rule="evenodd"
+            d="M18 12a6 6 0 1 1 0 12 6 6 0 0 1 0-12Zm0 2a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"
+            clip-rule="evenodd"
+          />
+          <path
+            fill="var(--c)"
+            d="M17 6.038a1 1 0 1 1 2 0v3a1 1 0 0 1-2 0v-3ZM24.244 7.742a1 1 0 1 1 1.618 1.176L24.1 11.345a1 1 0 1 1-1.618-1.176l1.763-2.427ZM29.104 13.379a1 1 0 0 1 .618 1.902l-2.854.927a1 1 0 1 1-.618-1.902l2.854-.927ZM29.722 20.795a1 1 0 0 1-.619 1.902l-2.853-.927a1 1 0 1 1 .618-1.902l2.854.927ZM25.862 27.159a1 1 0 0 1-1.618 1.175l-1.763-2.427a1 1 0 1 1 1.618-1.175l1.763 2.427ZM19 30.038a1 1 0 0 1-2 0v-3a1 1 0 1 1 2 0v3ZM11.755 28.334a1 1 0 0 1-1.618-1.175l1.764-2.427a1 1 0 1 1 1.618 1.175l-1.764 2.427ZM6.896 22.697a1 1 0 1 1-.618-1.902l2.853-.927a1 1 0 1 1 .618 1.902l-2.853.927ZM6.278 15.28a1 1 0 1 1 .618-1.901l2.853.927a1 1 0 1 1-.618 1.902l-2.853-.927ZM10.137 8.918a1 1 0 0 1 1.618-1.176l1.764 2.427a1 1 0 0 1-1.618 1.176l-1.764-2.427Z"
+          />
+        </svg>
+      </label>
+      <label class="switcher__option">
+        <input
+          class="switcher__input"
+          type="radio"
+          name="theme"
+          value="dark"
+          c-option="2"
+        />
+        <svg
+          class="switcher__icon"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 36 36"
+        >
+          <path
+            fill="var(--c)"
+            d="M12.5 8.473a10.968 10.968 0 0 1 8.785-.97 7.435 7.435 0 0 0-3.737 4.672l-.09.373A7.454 7.454 0 0 0 28.732 20.4a10.97 10.97 0 0 1-5.232 7.125l-.497.27c-5.014 2.566-11.175.916-14.234-3.813l-.295-.483C5.53 18.403 7.13 11.93 12.017 8.77l.483-.297Zm4.234.616a8.946 8.946 0 0 0-2.805.883l-.429.234A9 9 0 0 0 10.206 22.5l.241.395A9 9 0 0 0 22.5 25.794l.416-.255a8.94 8.94 0 0 0 2.167-1.99 9.433 9.433 0 0 1-2.782-.313c-5.043-1.352-8.036-6.535-6.686-11.578l.147-.491c.242-.745.573-1.44.972-2.078Z"
+          />
+        </svg>
+      </label>
+      <label class="switcher__option">
+        <input
+          class="switcher__input"
+          type="radio"
+          name="theme"
+          value="dim"
+          c-option="3"
+        />
+        <svg
+          class="switcher__icon"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 36 36"
+        >
+          <path
+            fill="var(--c)"
+            d="M5 21a1 1 0 0 1 1-1h24a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1ZM12 25a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H13a1 1 0 0 1-1-1ZM15 29a1 1 0 0 1 1-1h4a1 1 0 1 1 0 2h-4a1 1 0 0 1-1-1ZM18 13a6 6 0 0 1 5.915 7h-2.041A4.005 4.005 0 0 0 18 15a4 4 0 0 0-3.874 5h-2.041A6 6 0 0 1 18 13ZM17 7.038a1 1 0 1 1 2 0v3a1 1 0 0 1-2 0v-3ZM24.244 8.742a1 1 0 1 1 1.618 1.176L24.1 12.345a1 1 0 1 1-1.618-1.176l1.763-2.427ZM29.104 14.379a1 1 0 0 1 .618 1.902l-2.854.927a1 1 0 1 1-.618-1.902l2.854-.927ZM6.278 16.28a1 1 0 1 1 .618-1.901l2.853.927a1 1 0 1 1-.618 1.902l-2.853-.927ZM10.137 9.918a1 1 0 0 1 1.618-1.176l1.764 2.427a1 1 0 0 1-1.618 1.176l-1.764-2.427Z"
+          />
+        </svg>
+      </label>
+      <div class="switcher__filter"></div>
+    </fieldset>
 
-    <div class="container">
-      <div class="signup-container animate-on-load">
-        <div class="row g-0">
-          <!-- Left Side - Branding & Info -->
-          <div class="col-lg-5 signup-left">
-            <div class="signup-left-content">
-              <div class="brand-logo">
-                <i class="fas fa-heartbeat"></i>
-                MediVault
-              </div>
-              <h3 class="mb-4">Join the Future of Healthcare</h3>
-              <p class="lead mb-4">
-                Create your account and access a unified platform for
-                telemedicine, health records, and AI-powered insights.
-              </p>
+    <canvas id="plexus-bg"></canvas>
 
-              <ul class="feature-list">
-                <li>
-                  <i class="fas fa-check-circle"></i>
-                  <span>Secure, role-based access</span>
-                </li>
-                <li>
-                  <i class="fas fa-check-circle"></i>
-                  <span>AI-powered health insights</span>
-                </li>
-                <li>
-                  <i class="fas fa-check-circle"></i>
-                  <span>No downloads required</span>
-                </li>
-                <li>
-                  <i class="fas fa-check-circle"></i>
-                  <span>24/7 accessibility</span>
-                </li>
-                <li>
-                  <i class="fas fa-check-circle"></i>
-                  <span>HIPAA-grade security</span>
-                </li>
-              </ul>
-            </div>
+    <div class="page-container">
+      <div class="w-full max-w-lg liquidGlass-wrapper">
+        <div class="liquidGlass-effect"></div>
+        <div class="liquidGlass-tint"></div>
+        <div class="liquidGlass-shine"></div>
+        <div class="liquidGlass-content">
+          <div class="text-center">
+            <h1 class="text-4xl md:text-5xl font-black mb-3">Create Account</h1>
+            <p class="text-base mb-8">
+              Join the future of healthcare. Start by selecting your role.
+            </p>
           </div>
 
-          <!-- Right Side - Form -->
-          <div class="col-lg-7 signup-right">
-            <h2
-              class="mb-4 text-center"
-              style="color: var(--primary-color); font-weight: bold"
-            >
-              Create Your Account
-            </h2>
-
-            <form action="/auth/signup" method="POST" id="signupForm">
-              <!-- Role Selection -->
-              <div class="mb-4">
-                <label
-                  class="form-label fw-semibold"
-                  style="color: var(--primary-color)"
-                >
-                  I am joining as a:
-                </label>
-                <div class="row g-3 role-cards d-flex flex-row">
-                  <div class="col-md-4">
-                    <div class="role-card" data-role="patient">
-                      <i class="fas fa-user"></i>
-                      <h5>Patient</h5>
-                      <p>Access your health records and connect with doctors</p>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="role-card" data-role="doctor">
-                      <i class="fas fa-user-md"></i>
-                      <h5>Doctor</h5>
-                      <p>Manage patient care and provide consultations</p>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="role-card" data-role="hospital">
-                      <i class="fas fa-hospital"></i>
-                      <h5>Hospital</h5>
-                      <p>Oversee system integration and user management</p>
-                    </div>
-                  </div>
+          <form action="/auth/signup" method="POST">
+            <div class="inner-box-container mb-8">
+              <div class="grid grid-cols-3 gap-4">
+                <div class="role-card" data-role="patient">
+                  <i
+                    class="ph-bold ph-user text-3xl mb-2 transition-colors"
+                  ></i>
+                  <h3 class="font-semibold text-sm">Patient</h3>
                 </div>
-
-                <select
-                  class="form-select d-none"
-                  id="role"
-                  name="role"
-                  required
-                >
-                  <option value="">Choose your role...</option>
-                  <option value="patient">Patient</option>
-                  <option value="doctor">Doctor</option>
-                  <option value="hospital">Hospital</option>
-                </select>
+                <div class="role-card" data-role="doctor">
+                  <i
+                    class="ph-bold ph-first-aid-kit text-3xl mb-2 transition-colors"
+                  ></i>
+                  <h3 class="font-semibold text-sm">Doctor</h3>
+                </div>
+                <div class="role-card" data-role="hospital">
+                  <i
+                    class="ph-bold ph-hospital text-3xl mb-2 transition-colors"
+                  ></i>
+                  <h3 class="font-semibold text-sm">Hospital</h3>
+                </div>
               </div>
+            </div>
 
-              <!-- Name Field -->
-              <div class="form-floating">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="name"
-                  name="name"
-                  placeholder="Your Full Name"
-                  required
-                />
-                <label for="name">
-                  <i class="fas fa-user me-2"></i>Full Name
-                </label>
+            <select name="role" id="role" class="hidden" required>
+              <option value="">Choose your role...</option>
+              <option value="patient">Patient</option>
+              <option value="doctor">Doctor</option>
+              <option value="hospital">Hospital</option>
+            </select>
+
+            <div id="signup-form-container">
+              <div class="space-y-4">
+                <div>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    class="w-full p-3 rounded-lg form-input text-sm"
+                    placeholder="Full Name"
+                    required
+                  />
+                </div>
+                <div>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    class="w-full p-3 rounded-lg form-input text-sm"
+                    placeholder="Email Address"
+                    required
+                  />
+                </div>
+                <div>
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    class="w-full p-3 rounded-lg form-input text-sm"
+                    placeholder="Password"
+                    required
+                  />
+                </div>
               </div>
-
-              <!-- Email Field -->
-              <div class="form-floating">
-                <input
-                  type="email"
-                  class="form-control"
-                  id="email"
-                  name="email"
-                  placeholder="name@example.com"
-                  required
-                />
-                <label for="email">
-                  <i class="fas fa-envelope me-2"></i>Email Address
-                </label>
-              </div>
-
-              <!-- Password Field -->
-              <div class="form-floating">
-                <input
-                  type="password"
-                  class="form-control"
-                  id="password"
-                  name="password"
-                  placeholder="Password"
-                  required
-                />
-                <label for="password">
-                  <i class="fas fa-lock me-2"></i>Password
-                </label>
-                <div class="password-strength" id="passwordStrength"></div>
-              </div>
-
-              <!-- Submit Button -->
               <button
                 type="submit"
-                class="btn btn-signup w-100 mb-3"
-                disabled
-                id="submitBtn"
+                class="w-full text-white btn-primary py-3 rounded-lg mt-6 text-sm uppercase tracking-wider"
               >
-                <i class="fas fa-rocket me-2"></i>Create My Account
+                Create Account
               </button>
-            </form>
-
-            <div class="login-link">
-              <p class="mb-0">
-                Already have an account?
-                <a href="/auth/login">Sign in here</a>
-              </p>
             </div>
+          </form>
+
+          <div class="text-center mt-6">
+            <p class="text-sm">
+              Already have an account?
+              <a href="/auth/login" class="font-semibold hover:underline"
+                >Sign in</a
+              >
+            </p>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <svg style="display: none">
+      <filter
+        id="glass-distortion"
+        x="0%"
+        y="0%"
+        width="100%"
+        height="100%"
+        filterUnits="objectBoundingBox"
+      >
+        <feTurbulence
+          type="fractalNoise"
+          baseFrequency="0.02 0.02"
+          numOctaves="1"
+          seed="5"
+          result="turbulence"
+        />
+        <feDisplacementMap
+          in="SourceGraphic"
+          in2="turbulence"
+          scale="20"
+          xChannelSelector="R"
+          yChannelSelector="G"
+        />
+      </filter>
+    </svg>
+
     <script>
-      // Show role cards on page load
-      document.addEventListener("DOMContentLoaded", function () {
-        document.querySelector(".role-cards").style.display = "block";
-      });
-
-      // Role selection functionality
       const roleCards = document.querySelectorAll(".role-card");
-      const roleSelect = document.getElementById("role");
-      const submitBtn = document.getElementById("submitBtn");
-      const form = document.getElementById("signupForm");
+      const signupFormContainer = document.getElementById(
+        "signup-form-container"
+      );
+      const roleSelect = document.getElementById("role"); // Get the hidden select element
+      const switcher = document.querySelector(".switcher");
+      const canvas = document.getElementById("plexus-bg");
+      const ctx = canvas.getContext("2d");
 
+      // CHANGE 3: Updated role selection logic
       roleCards.forEach((card) => {
-        card.addEventListener("click", function () {
-          // Remove selected class from all cards
-          roleCards.forEach((c) => c.classList.remove("selected"));
+        card.addEventListener("click", () => {
+          roleCards.forEach((c) => c.classList.remove("active"));
+          card.classList.add("active");
 
-          // Add selected class to clicked card
-          this.classList.add("selected");
+          // Set the value of the hidden select input
+          const selectedRole = card.getAttribute("data-role");
+          roleSelect.value = selectedRole;
 
-          // Update hidden select value
-          const role = this.dataset.role;
-          roleSelect.value = role;
-
-          // Enable submit button if form is valid
-          validateForm();
+          signupFormContainer.classList.add("show");
         });
       });
 
-      // Password strength checker
-      const passwordInput = document.getElementById("password");
-      const passwordStrength = document.getElementById("passwordStrength");
+      // --- Plexus Background Animation ---
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      let points = [];
+      const numPoints = Math.floor((canvas.width * canvas.height) / 15000);
 
-      passwordInput.addEventListener("input", function () {
-        const password = this.value;
-        let strength = "";
-        let strengthClass = "";
-
-        if (password.length === 0) {
-          strength = "";
-        } else if (password.length < 6) {
-          strength = "Weak - At least 6 characters required";
-          strengthClass = "strength-weak";
-        } else if (password.length < 8) {
-          strength = "Medium - Consider adding numbers and symbols";
-          strengthClass = "strength-medium";
-        } else if (
-          password.match(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/
-          )
-        ) {
-          strength = "Strong - Excellent password!";
-          strengthClass = "strength-strong";
-        } else {
-          strength =
-            "Medium - Add uppercase, numbers, and symbols for better security";
-          strengthClass = "strength-medium";
-        }
-
-        passwordStrength.textContent = strength;
-        passwordStrength.className = `password-strength ${strengthClass}`;
-
-        validateForm();
-      });
-
-      // Form validation
-      function validateForm() {
-        const name = document.getElementById("name").value;
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-        const role = document.getElementById("role").value;
-
-        const isValid = name && email && password.length >= 6 && role;
-        submitBtn.disabled = !isValid;
+      function getAccentColor() {
+        const theme = document.querySelector(
+          'input[name="theme"]:checked'
+        ).value;
+        if (theme === "dark") return "3, 213, 255";
+        if (theme === "dim") return "255, 72, 169";
+        return "0, 82, 245";
       }
 
-      // Add event listeners for form validation
-      document.getElementById("name").addEventListener("input", validateForm);
-      document.getElementById("email").addEventListener("input", validateForm);
-      passwordInput.addEventListener("input", validateForm);
+      class Point {
+        constructor() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.vx = (Math.random() - 0.5) * 0.5;
+          this.vy = (Math.random() - 0.5) * 0.5;
+        }
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+          if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+          if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${getAccentColor()}, 0.8)`;
+          ctx.fill();
+        }
+      }
 
-      // Form submission animation
-      form.addEventListener("submit", function (e) {
-        submitBtn.innerHTML =
-          '<i class="fas fa-spinner fa-spin me-2"></i>Creating Account...';
-        submitBtn.disabled = true;
+      function init() {
+        points = [];
+        for (let i = 0; i < numPoints; i++) {
+          points.push(new Point());
+        }
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        points.forEach((p) => p.update());
+        points.forEach((p) => p.draw());
+        for (let i = 0; i < points.length; i++) {
+          for (let j = i + 1; j < points.length; j++) {
+            const dist = Math.hypot(
+              points[i].x - points[j].x,
+              points[i].y - points[j].y
+            );
+            if (dist < 120) {
+              ctx.beginPath();
+              ctx.moveTo(points[i].x, points[i].y);
+              ctx.lineTo(points[j].x, points[j].y);
+              ctx.strokeStyle = `rgba(${getAccentColor()}, ${1 - dist / 120})`;
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(animate);
+      }
+
+      window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        init();
       });
 
-      // Smooth animations for form elements
-      const formElements = document.querySelectorAll(
-        ".form-floating, .role-cards, .btn-signup"
-      );
-      formElements.forEach((el, index) => {
-        el.style.animationDelay = `${index * 0.1}s`;
-        el.classList.add("animate-on-load");
+      // --- Theme Switcher JS Logic ---
+      const trackPrevious = (el) => {
+        const radios = el.querySelectorAll('input[type="radio"]');
+        let previousValue = null;
+        const initiallyChecked = el.querySelector(
+          'input[type="radio"]:checked'
+        );
+        if (initiallyChecked) {
+          previousValue = initiallyChecked.getAttribute("c-option");
+          el.setAttribute("c-previous", previousValue);
+        }
+        radios.forEach((radio) => {
+          radio.addEventListener("change", () => {
+            if (radio.checked) {
+              el.setAttribute("c-previous", previousValue ?? "");
+              previousValue = radio.getAttribute("c-option");
+            }
+          });
+        });
+      };
+
+      // --- Initial Load ---
+      document.addEventListener("DOMContentLoaded", () => {
+        init();
+        animate();
+        trackPrevious(switcher);
       });
     </script>
   </body>

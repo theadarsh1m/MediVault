@@ -9,59 +9,113 @@ const JWT_SECRET = process.env.JWT_SECRET || "supersecret";
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "1d";
 
 // to generate UID
-async function generateUID(role) {
-  let count;
-  let prefix;
-
-  if (role === "patient") {
-    count = await Patient.countDocuments();
-    prefix = "PAT";
-  } else if (role === "doctor") {
-    count = await Doctor.countDocuments();
-    prefix = "DOC";
-  } else if (role === "hospital") {
-    count = await Hospital.countDocuments();
-    prefix = "HOS";
-  } else {
-    throw new Error("Invalid role for UID generation");
+const generateUID = async (role, Model) => {
+  const prefix = role === "patient" ? "PAT" : role === "doctor" ? "DOC" : "HOS";
+  
+  let uid;
+  let attempts = 0;
+  const maxAttempts = 10;
+  
+  while (attempts < maxAttempts) {
+    // Use timestamp + random number for better uniqueness
+    const timestamp = Date.now().toString().slice(-6);
+    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+    uid = `${prefix}-${timestamp}${random}`;
+    
+    // Check if UID already exists
+    const existing = await Model.findOne({ uid });
+    if (!existing) {
+      return uid;
+    }
+    attempts++;
   }
-
-  // e.g., PAT-0001, DOC-0001
-  const number = (count + 1).toString().padStart(4, "0");
-  return `${prefix}-${number}`;
-}
+  
+  // Fallback: use timestamp + counter
+  const count = await Model.countDocuments();
+  return `${prefix}-${Date.now()}-${count + 1}`;
+};
 
 // Signup Controller
 async function signup(req, res) {
-  const { name, email, password, role } = req.body;
-  // Check if user already exists in any collection
-  const existingUser =
-    (await Patient.findOne({ email })) ||
-    (await Doctor.findOne({ email })) ||
-    (await Hospital.findOne({ email }));
+   try {
+    console.log("Signup request body:", req.body); // Debug log
+    
+    const { role, name, email, password } = req.body;
 
-  if (existingUser) {
-    return res.status(400).json({ message: "Email already registered" });
-  }
-
-  try {
-    const uid = await generateUID(role);
-    let user;
-    if (role === "patient") {
-      user = new Patient({ name, email, password, uid });
-    } else if (role === "doctor") {
-      user = new Doctor({ name, email, password, uid });
-    } else if (role === "hospital") {
-      user = new Hospital({ name, email, password, uid });
-    } else {
-      return res.status(400).json({ message: "Invalid role" });
+    // Validate role
+    if (!role) {
+      return res.status(400).json({ message: "Role is required" });
     }
 
+    if (!["patient", "doctor", "hospital"].includes(role)) {
+      return res.status(400).json({ message: "Invalid role. Must be patient, doctor, or hospital" });
+    }
+
+    // Validate required fields
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "Name, email, and password are required" });
+    }
+
+    // Select the correct model based on role
+    let Model;
+    if (role === "patient") {
+      Model = Patient;
+    } else if (role === "doctor") {
+      Model = Doctor;
+    } else if (role === "hospital") {
+      Model = Hospital;
+    }
+
+    console.log("Selected model:", Model.modelName); // Debug log
+
+    // Check if user already exists
+    const existingUser = await Model.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "User with this email already exists" });
+    }
+
+    // Generate unique UID
+    const uid = await generateUID(role, Model);
+    console.log("Generated UID:", uid); // Debug log
+
+    // Create new user with generated UID
+    const user = new Model({ 
+      name, 
+      email, 
+      password, // Will be hashed by pre-save hook
+      uid 
+    });
+    
     await user.save();
-    res.status(201).json({ message: "Signup successful", user });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Error signing up", error: err.message });
+    console.log("User saved successfully:", user.uid); // Debug log
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: user._id, role, uid: user.uid },
+      process.env.JWT_SECRET || "your-secret-key",
+      { expiresIn: "7d" }
+    );
+
+    // Set cookie
+    res.cookie("token", token, { 
+      httpOnly: true, 
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    });
+
+    res.status(201).json({ 
+      message: "User created successfully", 
+      uid,
+      role,
+      redirectTo: `/dashboard/${role}`
+    });
+  } catch (error) {
+    console.error("Signup error:", error);
+    res.status(500).json({ 
+      message: "Error signing up", 
+      error: error.message,
+      stack: process.env.NODE_ENV === "development" ? error.stack : undefined
+    });
   }
 }
 

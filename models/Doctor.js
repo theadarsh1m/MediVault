@@ -8,7 +8,7 @@ const doctorSchema = new mongoose.Schema(
     password: { type: String, required: true },
     uid : { type: String, required: true, unique: true },
     specialization: String,
-    licenseNumber: { type: String, unique: true },
+    licenseNumber: { type: String, unique: true, sparse: true },
     experience: Number, // in years
     hospital: String,
   },

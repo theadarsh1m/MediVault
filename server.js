@@ -33,6 +33,12 @@ app.get('/', (req, res) => {
   res.render("home");
 });
 
+// Handle 404, if no route matches above
+app.use((req, res) => {
+  res.status(404).render("404", { title: "Page Not Found" });
+});
+
+
 
 
 app.listen(PORT, () => {

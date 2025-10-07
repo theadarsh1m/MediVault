@@ -3,16 +3,78 @@ const bcrypt = require("bcrypt");
 
 const patientSchema = new mongoose.Schema(
   {
+    uid: { type: String, required: true, unique: true },
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    uid: { type: String, required: true, unique: true },
-    age: Number,
-    gender: String,
-    medicalHistory: String,
-    allergies: String,
+    dob: { type: Date, required: true },
+    gender: { type: String, enum: ["Male", "Female", "Other"], required: true },
+    bloodGroup: { type: String, required: true},
+
+    address: String,
+    phone: String,
+
+    medicalHistory: {
+      surgicalProcedures: [String], // eg ["Appendectomy"]
+      alcoholOrSmoking: String, //  "Occasional smoker"
+      organHealth: String, //  "Liver issues"
+      healthConditions: [String], //  ["Thyroid", "Diabetes"]
+      allergies: [String], //  ["Penicillin"]
+      vaccinationRecords: [String], //  ["COVID-19", "Tetanus"]
+      pastHospitalizations: [
+        { reason: String, duration: String, hospitalName: String },
+      ],
+    },
+
+    currentHealth: {
+      medications: [
+        {
+          name: String,
+          dosage: String,
+          timing: String,
+        },
+      ],
+      exerciseRoutine: String,
+      mentalHealthStatus: String,
+    },
+
+    diagnostics: {
+      labReports: [String], // store URLs to uploaded reports
+      vitalSigns: {
+        bloodPressure: String,
+        heartRate: String,
+        bmi: String,
+        sugarLevels: String,
+      },
+      organFunction: {
+        liver: String,
+        kidney: String,
+        others: String,
+      },
+      immunizationReminders: [String],
+    },
+
+    admin: {
+      doctorNotes: String,
+      prescriptions: [String],
+      nextAppointment: Date,
+      emergencyContact: {
+        name: String,
+        relation: String,
+        phone: String,
+      },
+      insuranceDetails: String,
+      medicalDocuments: [String],
+      chatHistory: [
+        {
+          sender: String,
+          message: String,
+          timestamp: { type: Date, default: Date.now },
+        },
+      ],
+    },
   },
-  { timestamps: true }
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
 // Hash password before saving

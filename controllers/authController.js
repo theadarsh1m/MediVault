@@ -11,17 +11,19 @@ const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "1d";
 // to generate UID
 const generateUID = async (role, Model) => {
   const prefix = role === "patient" ? "PAT" : role === "doctor" ? "DOC" : "HOS";
-  
+
   let uid;
   let attempts = 0;
   const maxAttempts = 10;
-  
+
   while (attempts < maxAttempts) {
     // Use timestamp + random number for better uniqueness
     const timestamp = Date.now().toString().slice(-6);
-    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+    const random = Math.floor(Math.random() * 1000)
+      .toString()
+      .padStart(3, "0");
     uid = `${prefix}-${timestamp}${random}`;
-    
+
     // Check if UID already exists
     const existing = await Model.findOne({ uid });
     if (!existing) {
@@ -29,7 +31,7 @@ const generateUID = async (role, Model) => {
     }
     attempts++;
   }
-  
+
   // Fallback: use timestamp + counter
   const count = await Model.countDocuments();
   return `${prefix}-${Date.now()}-${count + 1}`;
@@ -37,55 +39,58 @@ const generateUID = async (role, Model) => {
 
 // Signup Controller
 async function signup(req, res) {
-   try {
+  try {
     console.log("Signup request body:", req.body); // Debug log
-    
-    const { role, name, email, password } = req.body;
+
+    const { role, name, email, password, dob, gender, bloodGroup } = req.body;
 
     // Validate role
-    if (!role) {
-      return res.status(400).json({ message: "Role is required" });
-    }
-
-    if (!["patient", "doctor", "hospital"].includes(role)) {
-      return res.status(400).json({ message: "Invalid role. Must be patient, doctor, or hospital" });
+    if (!role || !["patient", "doctor", "hospital"].includes(role)) {
+      return res
+        .status(400)
+        .json({
+          message: "Invalid role. Must be patient, doctor, or hospital",
+        });
     }
 
     // Validate required fields
     if (!name || !email || !password) {
-      return res.status(400).json({ message: "Name, email, and password are required" });
+      return res
+        .status(400)
+        .json({ message: "Name, email, and password are required" });
     }
 
     // Select the correct model based on role
-    let Model;
-    if (role === "patient") {
-      Model = Patient;
-    } else if (role === "doctor") {
-      Model = Doctor;
-    } else if (role === "hospital") {
-      Model = Hospital;
-    }
-
-    console.log("Selected model:", Model.modelName); // Debug log
+    let Model =
+      role === "patient" ? Patient : role === "doctor" ? Doctor : Hospital;
 
     // Check if user already exists
     const existingUser = await Model.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: "User with this email already exists" });
+      return res
+        .status(400)
+        .json({ message: "User with this email already exists" });
     }
 
     // Generate unique UID
     const uid = await generateUID(role, Model);
-    console.log("Generated UID:", uid); // Debug log
+
+    let userData = { name, email, password, uid };
+
+    if (role === "patient") {
+      if (!dob || !gender || !bloodGroup) {
+        return res
+          .status(400)
+          .json({
+            message: "DOB, gender, and blood group are required for patients",
+          });
+      }
+      userData = { ...userData, dob, gender, bloodGroup };
+    }
 
     // Create new user with generated UID
-    const user = new Model({ 
-      name, 
-      email, 
-      password, // Will be hashed by pre-save hook
-      uid 
-    });
-    
+    const user = new Model(userData);
+
     await user.save();
     console.log("User saved successfully:", user.uid); // Debug log
 
@@ -97,24 +102,24 @@ async function signup(req, res) {
     );
 
     // Set cookie
-    res.cookie("token", token, { 
-      httpOnly: true, 
+    res.cookie("token", token, {
+      httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
-    res.status(201).json({ 
-      message: "User created successfully", 
+    res.status(201).json({
+      message: "User created successfully",
       uid,
       role,
-      redirectTo: `/dashboard/${role}`
+      redirectTo: `/dashboard/${role}`,
     });
   } catch (error) {
     console.error("Signup error:", error);
-    res.status(500).json({ 
-      message: "Error signing up", 
+    res.status(500).json({
+      message: "Error signing up",
       error: error.message,
-      stack: process.env.NODE_ENV === "development" ? error.stack : undefined
+      stack: process.env.NODE_ENV === "development" ? error.stack : undefined,
     });
   }
 }

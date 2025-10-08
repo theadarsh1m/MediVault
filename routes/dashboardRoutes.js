@@ -28,6 +28,10 @@ router.get("/patient", authMiddleware, async (req, res) => {
         uid: patient.uid,
         age: patient.age,
         gender: patient.gender,
+        bloodGroup: patient.bloodGroup,
+        address: patient.address,
+        phone: patient.phone,
+        emergencyContact: patient.emergencyContact,
         medicalHistory: patient.medicalHistory,
         allergies: patient.allergies,
         role: "patient"

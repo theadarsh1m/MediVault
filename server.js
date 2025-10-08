@@ -7,9 +7,11 @@ const cookieParser = require('cookie-parser');
 const { connectToMongoDB } = require('./connect');
 const authRoutes = require('./routes/authRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const patientRoute = require('./routes/patientRoute');
 
-const app = express();
 dotenv.config();
+const app = express();
+
 
 const PORT = process.env.PORT || 5000;
 
@@ -27,6 +29,8 @@ app.use(cookieParser()); // to parse cookies
 // auth routes -> jitne bhi req /auth k baad aegi vo authRoutes handle krega
 app.use("/auth", authRoutes);
 app.use("/dashboard", dashboardRoutes);
+
+app.use("/patient", patientRoute);
 
 // Main page route
 app.get('/', (req, res) => {

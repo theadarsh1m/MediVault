@@ -266,64 +266,141 @@
                             <p class="text-sm text-gray-500">Manage your personal details and medical information</p>
                         </div>
                     </div>
-                    <button class="bg-gray-800 text-white text-sm font-medium px-4 py-2 rounded-lg flex items-center hover:bg-gray-700">
-                        <i data-lucide="edit-3" class="w-4 h-4 mr-2"></i> Edit Info
-                    </button>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <!-- Basic Info -->
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-700 mb-4">Basic Information</h3>
-                        <div class="space-y-4 text-sm">
-                            <div class="grid grid-cols-3 gap-2">
-                                <span class="text-gray-500">Full Name</span>
-                                <span class="col-span-2 font-medium text-gray-800"><%= user.name %></span>
-                            </div>
-                            <div class="grid grid-cols-3 gap-2">
-                                <span class="text-gray-500">Patient ID</span>
-                                <span class="col-span-2 font-medium text-blue-600"><%= user.uid %></span>
-                            </div>
-                            <div class="grid grid-cols-3 gap-2">
-                                <span class="text-gray-500">Email</span>
-                                <span class="col-span-2 font-medium text-gray-800"><%= user.email %></span>
-                            </div>
-                            <% if (user.age) { %>
-                            <div class="grid grid-cols-3 gap-2">
-                                <span class="text-gray-500">Age</span>
-                                <span class="col-span-2 font-medium text-gray-800"><%= user.age %> years</span>
-                            </div>
-                            <% } %>
-                            <% if (user.gender) { %>
-                            <div class="grid grid-cols-3 gap-2">
-                                <span class="text-gray-500">Gender</span>
-                                <span class="col-span-2 font-medium text-gray-800"><%= user.gender %></span>
-                            </div>
-                            <% } %>
-                        </div>
+                    <div class="flex gap-2">
+                        <button id="edit-info-btn" class="bg-gray-800 text-white text-sm font-medium px-4 py-2 rounded-lg flex items-center hover:bg-gray-700">
+                            <i data-lucide="edit-3" class="w-4 h-4 mr-2"></i> <span id="edit-btn-text">Edit Info</span>
+                        </button>
+                        <button id="save-info-btn" class="bg-green-600 text-white text-sm font-medium px-4 py-2 rounded-lg flex items-center hover:bg-green-700 hidden">
+                            <i data-lucide="save" class="w-4 h-4 mr-2"></i> Save Changes
+                        </button>
+                        <button id="cancel-edit-btn" class="bg-red-600 text-white text-sm font-medium px-4 py-2 rounded-lg flex items-center hover:bg-red-700 hidden">
+                            <i data-lucide="x" class="w-4 h-4 mr-2"></i> Cancel
+                        </button>
                     </div>
-                    <!-- Medical Info -->
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-700 mb-4">Medical Information</h3>
-                        <div class="space-y-3 text-sm mb-6">
-                            <div>
-                                <p class="text-gray-500 mb-2">Medical History:</p>
-                                <p class="font-medium text-gray-800"><%= user.medicalHistory || 'No medical history recorded' %></p>
-                            </div>
-                            <div>
-                                <p class="text-gray-500 mb-2">Allergies:</p>
-                                <% if (user.allergies) { %>
-                                <div class="flex flex-wrap gap-2">
-                                    <% user.allergies.split(',').forEach(allergy => { %>
-                                        <span class="bg-red-100 text-red-700 text-xs font-semibold px-2.5 py-0.5 rounded-full"><%= allergy.trim() %></span>
-                                    <% }); %>
+                </div>
+                
+                <!-- Success/Error Messages -->
+                <div id="update-message" class="hidden mb-4 p-3 rounded-lg">
+                    <div class="flex items-center">
+                        <i id="message-icon" class="w-5 h-5 mr-2"></i>
+                        <span id="message-text"></span>
+                    </div>
+                </div>
+                
+                <form id="patient-update-form">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Basic Info -->
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-700 mb-4">Basic Information</h3>
+                            <div class="space-y-4 text-sm">
+                                <div class="grid grid-cols-3 gap-2">
+                                    <span class="text-gray-500">Full Name</span>
+                                    <span class="col-span-2 font-medium text-gray-800"><%= user.name %></span>
                                 </div>
-                                <% } else { %>
-                                <p class="font-medium text-gray-400 italic">No allergies recorded</p>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <span class="text-gray-500">Patient ID</span>
+                                    <span class="col-span-2 font-medium text-blue-600"><%= user.uid %></span>
+                                </div>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <span class="text-gray-500">Email</span>
+                                    <span class="col-span-2 font-medium text-gray-800"><%= user.email %></span>
+                                </div>
+                                <% if (user.age) { %>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <span class="text-gray-500">Age</span>
+                                    <span class="col-span-2 font-medium text-gray-800"><%= user.age %> years</span>
+                                </div>
                                 <% } %>
+                                <% if (user.gender) { %>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <span class="text-gray-500">Gender</span>
+                                    <span class="col-span-2 font-medium text-gray-800"><%= user.gender %></span>
+                                </div>
+                                <% } %>
+                                
+                                <!-- Editable Fields -->
+                                <div class="grid grid-cols-3 gap-2 items-center">
+                                    <label class="text-gray-500">Blood Group</label>
+                                    <div class="col-span-2">
+                                        <span class="display-field font-medium text-gray-800"><%= user.bloodGroup || 'Not specified' %></span>
+                                        <select name="bloodGroup" class="edit-field hidden w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                            <option value="">Select Blood Group</option>
+                                            <option value="A+" <% if (user.bloodGroup === 'A+') { %>selected<% } %>>A+</option>
+                                            <option value="A-" <% if (user.bloodGroup === 'A-') { %>selected<% } %>>A-</option>
+                                            <option value="B+" <% if (user.bloodGroup === 'B+') { %>selected<% } %>>B+</option>
+                                            <option value="B-" <% if (user.bloodGroup === 'B-') { %>selected<% } %>>B-</option>
+                                            <option value="AB+" <% if (user.bloodGroup === 'AB+') { %>selected<% } %>>AB+</option>
+                                            <option value="AB-" <% if (user.bloodGroup === 'AB-') { %>selected<% } %>>AB-</option>
+                                            <option value="O+" <% if (user.bloodGroup === 'O+') { %>selected<% } %>>O+</option>
+                                            <option value="O-" <% if (user.bloodGroup === 'O-') { %>selected<% } %>>O-</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-3 gap-2 items-center">
+                                    <label class="text-gray-500">Phone</label>
+                                    <div class="col-span-2">
+                                        <span class="display-field font-medium text-gray-800"><%= user.phone || 'Not specified' %></span>
+                                        <input type="tel" name="phone" value="<%= user.phone || '' %>" class="edit-field hidden w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Enter phone number">
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-3 gap-2 items-start">
+                                    <label class="text-gray-500 mt-2">Address</label>
+                                    <div class="col-span-2">
+                                        <span class="display-field font-medium text-gray-800"><%= user.address || 'Not specified' %></span>
+                                        <textarea name="address" class="edit-field hidden w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-20 resize-none" placeholder="Enter your address"><%= user.address || '' %></textarea>
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-3 gap-2 items-start">
+                                    <label class="text-gray-500 mt-2">Emergency Contact</label>
+                                    <div class="col-span-2">
+                                        <div class="display-field font-medium text-gray-800">
+                                            <% if (user.emergencyContact && user.emergencyContact.phone) { %>
+                                                <div class="text-sm">
+                                                    <p><strong><%= user.emergencyContact.name || 'N/A' %></strong></p>
+                                                    <p class="text-gray-600"><%= user.emergencyContact.relation || 'N/A' %></p>
+                                                    <p class="text-gray-600"><%= user.emergencyContact.phone %></p>
+                                                </div>
+                                            <% } else { %>
+                                                Not specified
+                                            <% } %>
+                                        </div>
+                                        <div class="edit-field hidden space-y-2">
+                                            <input type="text" name="emergencyContactName" value="<%= user.emergencyContact && user.emergencyContact.name ? user.emergencyContact.name : '' %>" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Contact name">
+                                            <input type="text" name="emergencyContactRelation" value="<%= user.emergencyContact && user.emergencyContact.relation ? user.emergencyContact.relation : '' %>" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Relationship (e.g., Spouse, Parent)">
+                                            <input type="tel" name="emergencyContactPhone" value="<%= user.emergencyContact && user.emergencyContact.phone ? user.emergencyContact.phone : '' %>" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Phone number">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Medical Info (Read-only) -->
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-700 mb-4">Medical Information</h3>
+                            <div class="space-y-3 text-sm mb-6">
+                                <div>
+                                    <p class="text-gray-500 mb-2">Medical History:</p>
+                                    <p class="font-medium text-gray-800"><%= user.medicalHistory || 'No medical history recorded' %></p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 mb-2">Allergies:</p>
+                                    <% if (user.allergies) { %>
+                                    <div class="flex flex-wrap gap-2">
+                                        <% user.allergies.split(',').forEach(allergy => { %>
+                                            <span class="bg-red-100 text-red-700 text-xs font-semibold px-2.5 py-0.5 rounded-full"><%= allergy.trim() %></span>
+                                        <% }); %>
+                                    </div>
+                                    <% } else { %>
+                                    <p class="font-medium text-gray-400 italic">No allergies recorded</p>
+                                    <% } %>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
 
             <!-- Keep other tab panels (Timeline, Medications, Hospitals, AI Assistant) as they were -->
@@ -360,6 +437,153 @@
                         targetPanel.classList.remove('hidden');
                     }
                 });
+            });
+
+            // Patient info editing functionality
+            const editBtn = document.getElementById('edit-info-btn');
+            const saveBtn = document.getElementById('save-info-btn');
+            const cancelBtn = document.getElementById('cancel-edit-btn');
+            const form = document.getElementById('patient-update-form');
+            const displayFields = document.querySelectorAll('.display-field');
+            const editFields = document.querySelectorAll('.edit-field');
+            const messageDiv = document.getElementById('update-message');
+            const messageText = document.getElementById('message-text');
+            const messageIcon = document.getElementById('message-icon');
+
+            let isEditing = false;
+            let originalValues = {};
+
+            // Function to show message
+            function showMessage(message, type = 'success') {
+                messageText.textContent = message;
+                messageDiv.className = 'mb-4 p-3 rounded-lg';
+                
+                if (type === 'success') {
+                    messageDiv.classList.add('bg-green-50', 'border', 'border-green-200', 'text-green-800');
+                    messageIcon.setAttribute('data-lucide', 'check-circle');
+                } else {
+                    messageDiv.classList.add('bg-red-50', 'border', 'border-red-200', 'text-red-800');
+                    messageIcon.setAttribute('data-lucide', 'alert-circle');
+                }
+                
+                messageDiv.classList.remove('hidden');
+                lucide.createIcons();
+                
+                // Hide message after 5 seconds
+                setTimeout(() => {
+                    messageDiv.classList.add('hidden');
+                }, 5000);
+            }
+
+            // Function to toggle edit mode
+            function toggleEditMode(editing) {
+                isEditing = editing;
+                
+                if (editing) {
+                    // Store original values
+                    editFields.forEach(field => {
+                        originalValues[field.name] = field.value;
+                    });
+                    
+                    // Hide display fields and show edit fields
+                    displayFields.forEach(field => field.classList.add('hidden'));
+                    editFields.forEach(field => field.classList.remove('hidden'));
+                    
+                    // Toggle buttons
+                    editBtn.classList.add('hidden');
+                    saveBtn.classList.remove('hidden');
+                    cancelBtn.classList.remove('hidden');
+                } else {
+                    // Show display fields and hide edit fields
+                    displayFields.forEach(field => field.classList.remove('hidden'));
+                    editFields.forEach(field => field.classList.add('hidden'));
+                    
+                    // Toggle buttons
+                    editBtn.classList.remove('hidden');
+                    saveBtn.classList.add('hidden');
+                    cancelBtn.classList.add('hidden');
+                }
+                
+                lucide.createIcons();
+            }
+
+            // Edit button click handler
+            editBtn.addEventListener('click', () => {
+                toggleEditMode(true);
+            });
+
+            // Cancel button click handler
+            cancelBtn.addEventListener('click', () => {
+                // Restore original values
+                editFields.forEach(field => {
+                    field.value = originalValues[field.name] || '';
+                });
+                toggleEditMode(false);
+            });
+
+            // Save button click handler
+            saveBtn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                
+                const formData = new FormData(form);
+                const updateData = {};
+                
+                // Only include fields that have values
+                for (let [key, value] of formData.entries()) {
+                    if (value && value.trim() !== '') {
+                        updateData[key] = value.trim();
+                    }
+                }
+                
+                try {
+                    // Show loading state
+                    saveBtn.disabled = true;
+                    saveBtn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 mr-2 animate-spin"></i> Saving...';
+                    lucide.createIcons();
+                    
+                    const response = await fetch('/patient/update', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        credentials: 'include', // Important for cookies
+                        body: JSON.stringify(updateData)
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (response.ok) {
+                        showMessage(result.message, 'success');
+                        
+                        // Update display fields with new values
+                        displayFields.forEach(field => {
+                            const editField = field.parentElement.querySelector('.edit-field');
+                            if (editField) {
+                                const fieldName = editField.name || (editField.querySelector ? editField.querySelector('input').name : null);
+                                if (fieldName && updateData[fieldName]) {
+                                    field.textContent = updateData[fieldName];
+                                }
+                            }
+                        });
+                        
+                        toggleEditMode(false);
+                        
+                        // Reload page after 2 seconds to show updated data
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2000);
+                    } else {
+                        showMessage(result.message || 'Failed to update profile', 'error');
+                    }
+                } catch (error) {
+                    console.error('Update error:', error);
+                    showMessage('An error occurred while updating your profile', 'error');
+                } finally {
+                    // Restore button state
+                    saveBtn.disabled = false;
+                    saveBtn.innerHTML = '<i data-lucide="save" class="w-4 h-4 mr-2"></i> Save Changes';
+                    lucide.createIcons();
+                }
             });
         });
     </script>

@@ -42,7 +42,7 @@ async function signup(req, res) {
   try {
     console.log("Signup request body:", req.body); // Debug log
 
-    const { role, name, email, password, dob, gender, bloodGroup } = req.body;
+    const { role, name, email, password, dob, gender } = req.body;
 
     // Validate role
     if (!role || !["patient", "doctor", "hospital"].includes(role)) {
@@ -78,14 +78,14 @@ async function signup(req, res) {
     let userData = { name, email, password, uid };
 
     if (role === "patient") {
-      if (!dob || !gender || !bloodGroup) {
+      if (!dob || !gender) {
         return res
           .status(400)
           .json({
-            message: "DOB, gender, and blood group are required for patients",
+            message: "DOB, and gender are required for patients",
           });
       }
-      userData = { ...userData, dob, gender, bloodGroup };
+      userData = { ...userData, dob, gender };
     }
 
     // Create new user with generated UID
@@ -97,7 +97,7 @@ async function signup(req, res) {
     // Generate JWT token
     const token = jwt.sign(
       { id: user._id, role, uid: user.uid },
-      process.env.JWT_SECRET || "your-secret-key",
+      process.env.JWT_SECRET || "supersecret",
       { expiresIn: "7d" }
     );
 

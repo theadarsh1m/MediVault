@@ -9,9 +9,9 @@ const patientSchema = new mongoose.Schema(
     password: { type: String, required: true },
     dob: { type: Date, required: true },
     gender: { type: String, enum: ["Male", "Female", "Other"], required: true },
-    bloodGroup: { type: String, required: true, enum: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"] },
 
     // editable by patient
+    bloodGroup: String,
     address: String,
     phone: String,
     emergencyContact: {

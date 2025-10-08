@@ -14,13 +14,16 @@ async function authMiddleware(req, res, next) {
     let user;
 
     if (decoded.role === "patient") user = await Patient.findById(decoded.id);
-    else if (decoded.role === "doctor") user = await Doctor.findById(decoded.id);
-    else if (decoded.role === "hospital") user = await Hospital.findById(decoded.id);
+    else if (decoded.role === "doctor")
+      user = await Doctor.findById(decoded.id);
+    else if (decoded.role === "hospital")
+      user = await Hospital.findById(decoded.id);
 
     if (!user) return res.redirect("/auth/login");
 
     req.user = {
       id: user._id,
+      uid: user.uid,
       name: user.name,
       email: user.email,
       role: decoded.role,

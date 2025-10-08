@@ -342,14 +342,14 @@
         --c: var(--c-action);
         cursor: pointer;
       }
-      .switcher__option:hover .switcher__icon {
+      .switcher_option:hover .switcher_icon {
         scale: 1.2;
       }
       .switcher__option:has(input:checked) {
         --c: var(--c-content);
         cursor: auto;
       }
-      .switcher__option:has(input:checked) .switcher__icon {
+      .switcher_option:has(input:checked) .switcher_icon {
         scale: 1;
       }
       .switcher::after {
@@ -599,6 +599,54 @@
                     required
                   />
                 </div>
+
+                <div id="patient-specific-fields" class="hidden">
+                  <div class="space-y-4 mt-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <input
+                          type="text"
+                          onfocus="(this.type='date')"
+                          onblur="(this.type === 'date' && !this.value) ? this.type='text' : ''"
+                          id="dob"
+                          name="dob"
+                          class="w-full p-3 rounded-lg form-input text-sm"
+                          placeholder="Date of Birth"
+                        />
+                      </div>
+                      <div>
+                        <select
+                          id="gender"
+                          name="gender"
+                          class="w-full p-3 rounded-lg form-input text-sm"
+                          required
+                        >
+                          <option value="" disabled selected>Gender</option>
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                          <option value="Other">Other</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div>
+                      <select
+                        id="bloodgroup"
+                        name="bloodgroup"
+                        class="w-full p-3 rounded-lg form-input text-sm"
+                      >
+                        <option value="" disabled selected>Blood Group</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
                 <div>
                   <input
                     type="password"
@@ -662,20 +710,40 @@
       const signupFormContainer = document.getElementById(
         "signup-form-container"
       );
-      const roleSelect = document.getElementById("role"); // Get the hidden select element
+      const roleSelect = document.getElementById("role");
       const switcher = document.querySelector(".switcher");
       const canvas = document.getElementById("plexus-bg");
       const ctx = canvas.getContext("2d");
 
-      // CHANGE 3: Updated role selection logic
+      // CHANGE 3: Get patient-specific fields container and inputs
+      const patientSpecificFields = document.getElementById(
+        "patient-specific-fields"
+      );
+      const patientInputs =
+        patientSpecificFields.querySelectorAll("input, select");
+
       roleCards.forEach((card) => {
         card.addEventListener("click", () => {
           roleCards.forEach((c) => c.classList.remove("active"));
           card.classList.add("active");
 
-          // Set the value of the hidden select input
           const selectedRole = card.getAttribute("data-role");
           roleSelect.value = selectedRole;
+
+          // CHANGE 4: Logic to show/hide patient fields and toggle requirement
+          if (selectedRole === "patient") {
+            patientSpecificFields.classList.remove("hidden");
+            patientInputs.forEach((input) => {
+              if (input.name !== "gender") {
+                input.required = false;
+              } else {
+                input.required = true;
+              }
+            });
+          } else {
+            patientSpecificFields.classList.add("hidden");
+            patientInputs.forEach((input) => (input.required = false));
+          }
 
           signupFormContainer.classList.add("show");
         });
@@ -712,7 +780,7 @@
         draw() {
           ctx.beginPath();
           ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${getAccentColor()}, 0.8)`;
+          ctx.fillStyle = rgba(${getAccentColor()}, 0.8);
           ctx.fill();
         }
       }
@@ -738,7 +806,7 @@
               ctx.beginPath();
               ctx.moveTo(points[i].x, points[i].y);
               ctx.lineTo(points[j].x, points[j].y);
-              ctx.strokeStyle = `rgba(${getAccentColor()}, ${1 - dist / 120})`;
+              ctx.strokeStyle = rgba(${getAccentColor()}, ${1 - dist / 120});
               ctx.stroke();
             }
           }

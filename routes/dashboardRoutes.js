@@ -14,28 +14,37 @@ router.get("/patient", authMiddleware, async (req, res) => {
 
     // Fetch complete patient data from database
     const patient = await Patient.findById(req.user.id).select("-password");
-    
+
     if (!patient) {
       return res.redirect("/auth/login");
     }
 
     // Pass all patient data to the view
-    res.render("patientDashboard", { 
+    res.render("patientDashboard", {
       user: {
+        // Core patient details
         id: patient._id,
+        uid: patient.uid,
         name: patient.name,
         email: patient.email,
-        uid: patient.uid,
-        age: patient.age,
+        dob: patient.dob,
         gender: patient.gender,
+        role: "patient", // Static role assignment
+
+        // Contact and emergency info
         bloodGroup: patient.bloodGroup,
         address: patient.address,
         phone: patient.phone,
         emergencyContact: patient.emergencyContact,
+
+        // Comprehensive health information
         medicalHistory: patient.medicalHistory,
-        allergies: patient.allergies,
-        role: "patient"
-      }
+        currentHealth: patient.currentHealth,
+        diagnostics: patient.diagnostics,
+
+        // Admin-controlled information
+        admin: patient.admin,
+      },
     });
   } catch (error) {
     console.error("Error loading patient dashboard:", error);
@@ -51,13 +60,13 @@ router.get("/doctor", authMiddleware, async (req, res) => {
 
     // Fetch complete doctor data from database
     const doctor = await Doctor.findById(req.user.id).select("-password");
-    
+
     if (!doctor) {
       return res.redirect("/auth/login");
     }
 
     // Pass all doctor data to the view
-    res.render("doctorDashboard", { 
+    res.render("doctorDashboard", {
       user: {
         id: doctor._id,
         name: doctor.name,
@@ -67,8 +76,8 @@ router.get("/doctor", authMiddleware, async (req, res) => {
         licenseNumber: doctor.licenseNumber,
         experience: doctor.experience,
         hospital: doctor.hospital,
-        role: "doctor"
-      }
+        role: "doctor",
+      },
     });
   } catch (error) {
     console.error("Error loading doctor dashboard:", error);
@@ -84,13 +93,13 @@ router.get("/hospital", authMiddleware, async (req, res) => {
 
     // Fetch complete hospital data from database
     const hospital = await Hospital.findById(req.user.id).select("-password");
-    
+
     if (!hospital) {
       return res.redirect("/auth/login");
     }
 
     // Pass all hospital data to the view
-    res.render("hospitalDashboard", { 
+    res.render("hospitalDashboard", {
       user: {
         id: hospital._id,
         name: hospital.name,
@@ -99,8 +108,8 @@ router.get("/hospital", authMiddleware, async (req, res) => {
         address: hospital.address,
         numberOfBeds: hospital.numberOfBeds,
         contactNumber: hospital.contactNumber,
-        role: "hospital"
-      }
+        role: "hospital",
+      },
     });
   } catch (error) {
     console.error("Error loading hospital dashboard:", error);

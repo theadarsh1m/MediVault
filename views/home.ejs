@@ -207,7 +207,7 @@
         left: 0;
         width: 100%;
         padding: 1rem 0; /* Adjusted padding */
-        z-index: 100;
+        z-index: 1000; /* Ensure header is on top */
         background: rgba(2, 12, 27, 0.8);
         backdrop-filter: blur(10px);
         transition: background 0.4s ease;
@@ -259,36 +259,82 @@
       .hamburger-menu {
         display: none;
         cursor: pointer;
-        z-index: 101;
+        z-index: 1002; /* Above overlay and menu */
+        padding: 10px;
+        margin: -10px; 
       }
       .hamburger-menu .bar {
           width: 25px;
           height: 3px;
           background-color: white;
           margin: 5px 0;
-          transition: 0.4s;
+          transition: 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
       }
+      .hamburger-menu.open .bar:nth-child(1) {
+        transform: rotate(-45deg) translate(-5px, 6px);
+      }
+      .hamburger-menu.open .bar:nth-child(2) {
+        opacity: 0;
+      }
+      .hamburger-menu.open .bar:nth-child(3) {
+        transform: rotate(45deg) translate(-5px, -6px);
+      }
+      
       .mobile-nav {
-        display: none;
         position: fixed;
         top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(2, 12, 27, 0.95);
-        backdrop-filter: blur(10px);
+        right: 0;
+        width: min(75vw, 300px); /* Slide from right */
+        height: 100vh;
+        background: rgba(10, 25, 47, 0.8); /* Glass bg */
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        z-index: 1001;
+        display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: center;
-        z-index: 100;
+        align-items: flex-start; /* Align text left */
+        padding: 2rem;
+        transform: translateX(100%);
+        transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+      .mobile-nav.open {
+        transform: translateX(0);
       }
       .mobile-nav a {
         color: var(--light-slate);
-        font-size: 2rem;
-        margin: 1.5rem 0;
+        font-size: 1.25rem; /* Smaller font size */
+        margin: 1rem 0;
         text-decoration: none;
+        font-weight: 500;
+        opacity: 0;
+        transform: translateX(10px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
       }
+      .mobile-nav.open a {
+        opacity: 1;
+        transform: translateX(0);
+      }
+      /* Stagger link animations */
+      .mobile-nav.open a:nth-child(1) { transition-delay: 0.2s; }
+      .mobile-nav.open a:nth-child(2) { transition-delay: 0.3s; }
+      .mobile-nav.open a:nth-child(3) { transition-delay: 0.4s; }
+      .mobile-nav.open a:nth-child(4) { transition-delay: 0.5s; }
+      .mobile-nav.open a:nth-child(5) { transition-delay: 0.6s; }
 
+      .menu-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 1000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.4s ease;
+      }
+      .menu-overlay.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
 
       /* ------------------------------ */
       /* -------- HERO SECTION -------- */
@@ -305,6 +351,9 @@
       .hero-content {
         max-width: 800px;
         margin: 0 auto;
+      }
+      .hero-content h1 {
+        min-height: 150px; /* Give space for typewriter */
       }
       .hero-content h1 span {
         color: var(--secondary-color);
@@ -337,7 +386,7 @@
       /* ------------------------------ */
       .features-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 2rem;
         margin-top: 3rem;
       }
@@ -649,6 +698,12 @@
         & .hamburger-menu .bar {
             background-color: var(--c-content);
         }
+        & .mobile-nav {
+            background: rgba(245, 250, 255, 0.8);
+        }
+        & .mobile-nav a {
+            color: var(--c-content);
+        }
       }
 
       /* ------------------------------ */
@@ -944,11 +999,34 @@
             width: 50px; /* Explicit width */
         }
         #security .security-content {
-            flex-direction: column;
+            flex-direction: column-reverse; /* Image on top */
             gap: 2rem;
         }
         #security .security-image img {
             max-width: 100%;
+        }
+      }
+      
+      @media (max-width: 480px) {
+        .container {
+            padding: 0 1.5rem;
+        }
+        h1 {
+            font-size: 2.2rem;
+        }
+         .hero-content h1 {
+            min-height: 180px; /* More space for smaller screens */
+         }
+        .cta-section h2 {
+            font-size: 1.8rem;
+        }
+        .cta-buttons-container {
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+        .pebbles-container {
+            gap: 1.5rem;
         }
       }
 
@@ -956,6 +1034,7 @@
     </style>
   </head>
   <body>
+    <div class="menu-overlay"></div>
     <svg style="display: none">
       <filter
         id="glass-distortion"
@@ -1077,13 +1156,13 @@
           </div>
         </nav>
       </header>
-       <div class="mobile-nav">
+       <nav class="mobile-nav">
             <a href="#features">Portals</a>
             <a href="#how-it-works">How It Works</a>
             <a href="#security">Security</a>
             <a href="/auth/login">Login</a>
             <a href="/auth/signup">Sign Up</a>
-        </div>
+        </nav>
 
 
       <main>
@@ -1320,7 +1399,7 @@
                     href="https://www.linkedin.com/in/abhinav-kumar-10a942262/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    >Abhinav</a
+                    > Abhinav</a
                   >
                 </div>
               </div>
@@ -1328,7 +1407,7 @@
           </div>
           <div style="margin-bottom: 2.5rem; text-align: center">
             <a
-              href="https://github.com/theadarsh1m/MediVault"
+              href="https://github.com/theadarsh1m/Medivault"
               target="_blank"
               rel="noopener noreferrer"
               class="liquidGlass-wrapper glass-button cta-github-button"
@@ -1352,9 +1431,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.min.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
       const scroller = new LocomotiveScroll({
         el: document.querySelector("[data-scroll-container]"),
         smooth: true,
+        tablet: { smooth: true },
+        smartphone: { smooth: true }
       });
 
       // Add reveal class to elements when they come into view
@@ -1374,7 +1456,6 @@
         const radios = el.querySelectorAll('input[type="radio"]');
         let previousValue = null;
 
-        // init first select
         const initiallyChecked = el.querySelector(
           'input[type="radio"]:checked'
         );
@@ -1398,17 +1479,33 @@
       // --- HAMBURGER MENU SCRIPT ---
         const hamburger = document.querySelector('.hamburger-menu');
         const mobileNav = document.querySelector('.mobile-nav');
+        const menuOverlay = document.querySelector('.menu-overlay');
+        const mainContainer = document.querySelector('[data-scroll-container]');
 
-        hamburger.addEventListener('click', () => {
-            mobileNav.style.display = mobileNav.style.display === 'flex' ? 'none' : 'flex';
+        function toggleMenu(isOpen) {
+            const open = isOpen !== undefined ? isOpen : !hamburger.classList.contains('open');
+            hamburger.classList.toggle('open', open);
+            mobileNav.classList.toggle('open', open);
+            menuOverlay.classList.toggle('open', open);
+            
+            if (open) {
+                scroller.stop();
+            } else {
+                scroller.start();
+            }
+        }
+
+        hamburger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMenu();
         });
 
-        // Close mobile nav when a link is clicked
+        menuOverlay.addEventListener('click', () => toggleMenu(false));
+        
         document.querySelectorAll('.mobile-nav a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileNav.style.display = 'none';
-            });
+            link.addEventListener('click', () => toggleMenu(false));
         });
+
 
         // --- TYPEWRITER EFFECT SCRIPT ---
         const headlineElement = document.getElementById('typewriter-headline');
@@ -1417,24 +1514,20 @@
 
         function typeWriter() {
             if (charIndex < textToType.length) {
-                // If the current part of the string is the start of the span tag
                 if (textToType.substring(charIndex, charIndex + 6) === '<span>') {
                     const closingTagIndex = textToType.indexOf('</span>', charIndex) + 7;
                     headlineElement.innerHTML += textToType.substring(charIndex, closingTagIndex);
-                    charIndex = closingTagIndex; // Move index past the entire span tag
+                    charIndex = closingTagIndex;
                 } else {
-                    // Otherwise, type one character at a time
                     headlineElement.innerHTML += textToType.charAt(charIndex);
                     charIndex++;
                 }
-                setTimeout(typeWriter, 90); // Adjust typing speed here (in milliseconds)
+                setTimeout(typeWriter, 90);
             } else {
-                // After typing is complete, add a blinking cursor
                 headlineElement.innerHTML += '<span class="blinking-cursor">|</span>';
             }
         }
         
-        // Delay the start of typing to allow the reveal animation to be visible
         setTimeout(typeWriter, 500);
 
       // --- FIX FOR LOCOMOTIVE SCROLL ANCHOR LINKS ---
@@ -1442,13 +1535,11 @@
 
       anchorLinks.forEach((link) => {
         link.addEventListener("click", (e) => {
-          e.preventDefault(); // Prevent default browser jump
-
+          e.preventDefault();
           const targetId = link.getAttribute("href");
           const targetElement = document.querySelector(targetId);
 
           if (targetElement) {
-            // Use Locomotive Scroll's method to scroll smoothly to the target
             scroller.scrollTo(targetElement);
           }
         });
@@ -1458,25 +1549,25 @@
       const securityImageContainer = document.querySelector(".security-image");
       const securityImage = securityImageContainer.querySelector("img");
 
-      // When the mouse moves over the container
       securityImageContainer.addEventListener("mousemove", (e) => {
         const rect = securityImageContainer.getBoundingClientRect();
-        const x = e.clientX - rect.left; // Mouse x position within the element
-        const y = e.clientY - rect.top; // Mouse y position within the element
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
         const { width, height } = rect;
-
-        // Calculate rotation based on mouse position (from -12.5 to +12.5 degrees)
         const rotateX = (y / height - 0.5) * -25;
         const rotateY = (x / width - 0.5) * 25;
-
-        // Apply the 3D transform style
         securityImage.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
       });
 
-      // When the mouse leaves the container, reset the image
       securityImageContainer.addEventListener("mouseleave", () => {
         securityImage.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
       });
+
+      // Refresh Locomotive Scroll on window resize
+      window.addEventListener('resize', () => {
+          scroller.update();
+      });
+    });
     </script>
   </body>
 </html>
